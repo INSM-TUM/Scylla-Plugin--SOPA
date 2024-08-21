@@ -2,7 +2,6 @@
 Simulate models with sustainability info, process and visualize the simulation results.
 
 ## ℹ️ About
-## Function:
 The plugin works by extending, Scylla, a business process simulator by processing sustainability information
 of a business process, passing it through the Scylla simulation and outputs data insights.
 ### Why sustainability information important?
