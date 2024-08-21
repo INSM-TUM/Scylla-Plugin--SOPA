@@ -31,13 +31,30 @@ jobs:
           java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
           cache: maven
+
+      - name: Download and Unpack Scylla
+        run: |
+          # Define variables for URLs and target directory
+          SCYLLA_URL="https://github.com/bptlab/scylla/releases/download/0.0.1-SNAPSHOT/scylla.zip"
+          TARGET_DIR="${{ github.workspace }}/lib"
+          
+          # Create the target directory if it doesn't exist
+          mkdir -p $TARGET_DIR
+          
+          # Download the zip file
+          wget $SCYLLA_URL -O scylla.zip
+          
+          # Unpack the zip file
+          unzip scylla.zip
+          
+          # Move the JAR files to the target directory
+          mv scylla.jar $TARGET_DIR
+          mv scylla-tests.jar $TARGET_DIR
+
       - name: Setup dependencies
         run: mvn -B clean --file pom.xml
-      - name: Build and tests with Maven
+
+      - name: Build with Maven
         uses: coactions/setup-xvfb@v1
         with:
           run: mvn -B package --file pom.xml
-
-      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-      - name: Update dependency graph
-        uses: advanced-security/maven-dependency-submission-action@v3
