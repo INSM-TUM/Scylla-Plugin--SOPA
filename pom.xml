@@ -7,7 +7,7 @@
 
     <groupId>de.hpi.bpt</groupId>
     <artifactId>cost_driver</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>cost_driver</name>
@@ -224,6 +224,14 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/bptlab/scylla</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
     <distributionManagement>
         <repository>
             <id>github</id>
