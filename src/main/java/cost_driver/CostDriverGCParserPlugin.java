@@ -47,4 +47,5 @@ public class CostDriverGCParserPlugin extends GlobalConfigurationParserPluggable
 
         return extensionAttributes;
     }
+
 }

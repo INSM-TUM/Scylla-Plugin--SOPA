@@ -58,11 +58,11 @@ class ExecutionLoggingPluginTest extends SimulationTest {
     @Test
     @DisplayName("Integration - Find Concrete Cost Driver")
     void testFindConcreteCaseByCost_Integration() throws ScyllaValidationException, IOException {
-        Scripts.runMoockModels();
+        ScyllaScripts.runMoockModels();
         CostDriverExecutionLoggingPlugin testSubject = new CostDriverExecutionLoggingPlugin();
 
         // Integrate the Configurations
-        TEST_GLOBAL_CONFIG = Scripts.manager.getGlobalConfiguration();
+        TEST_GLOBAL_CONFIG = ScyllaScripts.manager.getGlobalConfiguration();
 
         // Integrate the ACDs
         TEST_ABSTRACT_DRIVER_LIST = (List<AbstractCostDriver>) TEST_GLOBAL_CONFIG.getExtensionAttributes().get("cost_driver_costDrivers");
@@ -102,10 +102,13 @@ class ExecutionLoggingPluginTest extends SimulationTest {
     private void prepareCostVariant() {
         // Create CostVariant
         Map<String, Double> testConcretisedACD = new HashMap<>();
+
         // Valid LCAScore
         testConcretisedACD.put("Delivery", 0.00002843);
+
         // Invalid LCAScore
         testConcretisedACD.put(TEST_ABSTRACT_DRIVER_LIST.get(1).getId(), Math.pow(new Random().nextDouble(), Math.pow(10, -5)));
+
         // Instantiate new CostVariant
         TEST_COST_VARIANT = new CostVariant("testID", 0.2, testConcretisedACD);
     }

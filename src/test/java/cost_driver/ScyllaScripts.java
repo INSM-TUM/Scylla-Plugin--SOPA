@@ -26,7 +26,7 @@ import static cost_driver.Utils.*;
  *
  * @author Leon Bein
  */
-public class Scripts {
+public class ScyllaScripts {
     public static SimulationManager manager;
 
     public static void main(String[] args) throws IOException {
@@ -34,11 +34,7 @@ public class Scripts {
     }
 
     public static void runMoockModels() throws IOException {
-        PluginLoader.getDefaultPluginLoader().loadPackage(Main.class.getPackageName());
-        PluginLoader.getDefaultPluginLoader().activateNone()
-                .activatePackage("cost_driver")
-                .printPlugins();
-
+        PluginLoader.getDefaultPluginLoader().activateNone().loadPackage(Main.class.getPackageName());
 
         int[] clerkCountsToTest = new int[]{4};
         int numInstances = 10;

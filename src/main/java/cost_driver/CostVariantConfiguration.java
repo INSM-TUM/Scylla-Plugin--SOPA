@@ -5,9 +5,9 @@ import java.util.stream.IntStream;
 
 public class CostVariantConfiguration {
 
-    protected Integer count;
-    protected List<CostVariant> costVariantList;
-    protected Stack<CostVariant> costVariantListConfigured;
+    private Integer count;
+    private List<CostVariant> costVariantList;
+    private final Stack<CostVariant> costVariantListConfigured;
 
     /**
      * Constructor's logic is derived from
@@ -22,7 +22,7 @@ public class CostVariantConfiguration {
      * @param count: number of simulation runs
      * @param costVariantList: list of parsed cost variants from the simulation configuration
      */
-    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList, Random random) {
+    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList, Long seed) {
         this.count = count;
         this.costVariantList = costVariantList;
 
@@ -32,7 +32,7 @@ public class CostVariantConfiguration {
                         .forEach(i -> costVariantListConfigured.push(costVariant))
         );
 
-        Collections.shuffle(costVariantListConfigured, new Random());
+        Collections.shuffle(costVariantListConfigured, new Random(seed));
         System.out.println("Size of configured cost variant list: " + costVariantListConfigured.size());
     }
 

@@ -43,12 +43,9 @@ public class ConcreteCostDriver extends CostDriver {
         //It is a weak check <- to be Extended
         boolean isParentEqual = parent.id.compareTo(concreteCostDriver.parent.id) == 0;
 
-        if (id.compareTo(concreteCostDriver.id) == 0 &&
+        return id.compareTo(concreteCostDriver.id) == 0 &&
                 isParentEqual &&
-                Double.compare(LCAScore, concreteCostDriver.LCAScore) == 0) {
-            return true;
-        }
-        return false;
+                Double.compare(LCAScore, concreteCostDriver.LCAScore) == 0;
     }
 
 

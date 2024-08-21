@@ -104,7 +104,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             //Preparation for adding <string key=”cost:variant” value=”standard procedure”/>
             SimulationConfiguration simulationConfiguration = desmojObjectsMap.get(processId).getSimulationConfiguration();
             CostVariantConfiguration costVariants = (CostVariantConfiguration) simulationConfiguration.getExtensionAttributes().get("cost_driver_CostVariant");
-            Stack<CostVariant> costVariantStack = costVariants.getCostVariantListConfigured();
+            Stack<CostVariant> costVariantStack = (Stack<CostVariant>) costVariants.getCostVariantListConfigured().clone();
+
 
             /**
              * Preparation for Average Cost Calculation
@@ -354,7 +355,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             else {
                 serializer = new XesXmlSerializer();
                 fos = new FileOutputStream(outputPathWithoutExtension + fileNameWithoutExtension + ".xes");
-            };
+            }
             serializer.serialize(log, fos);
             fos.close();
 

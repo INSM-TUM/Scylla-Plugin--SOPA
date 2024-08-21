@@ -2,35 +2,26 @@ package cost_driver;
 
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
-import de.hpi.bpt.scylla.model.global.resource.Resource;
-import de.hpi.bpt.scylla.plugin_type.parser.EventOrderType;
-import de.hpi.bpt.scylla.plugin_type.parser.GlobalConfigurationParserPluggable;
-import org.jdom2.Document;
-import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InvalidClassException;
-import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static cost_driver.Utils.GLOBAL_CONFIGURATION;
-import static de.hpi.bpt.scylla.Scylla.normalizePath;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GCParserTest {
 
+    // TODO: make it work with actual .xml (any .xml)
     @Test
     @DisplayName("Integration test")
     void testParse_Integration() throws IOException, ScyllaValidationException, JDOMException {
-        Scripts.runMoockModels();
+        ScyllaScripts.runMoockModels();
 
         // Integrate the Global Configuration
-        GlobalConfiguration actualGlobalConfig = Scripts.manager.getGlobalConfiguration();
+        GlobalConfiguration actualGlobalConfig = ScyllaScripts.manager.getGlobalConfiguration();
 
         // Integrate the ACDs
         Object obj = actualGlobalConfig.getExtensionAttributes().get("cost_driver_costDrivers");
@@ -44,7 +35,6 @@ class GCParserTest {
                         fail("\nWrongly parsed ACD: " +
                                 "\nActual: " + abstractCostDriverList.get(i).toString() +
                                 "\nExpected: " + expected.get(i).toString()
-
                         );
                     }
                 }

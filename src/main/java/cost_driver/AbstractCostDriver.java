@@ -3,7 +3,7 @@ package cost_driver;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 import java.util.stream.Collectors;
 
 public class AbstractCostDriver extends CostDriver {
@@ -25,10 +25,6 @@ public class AbstractCostDriver extends CostDriver {
     }
 
 
-    public ConcreteCostDriver findCCDbyID(String CCDid) {
-        return getChildren().stream().filter(i -> i.getId().equals(CCDid)).findFirst().orElseThrow();
-    }
-
     @Override
     public boolean equals(Object obj) {
         // If the object is compared with itself then return true
@@ -38,11 +34,7 @@ public class AbstractCostDriver extends CostDriver {
           "null instanceof [type]" also returns false */
         if (!(obj instanceof AbstractCostDriver abstractCostDriver)) return false;
 
-        boolean equalChildren = false;
-
-
-        if (id.compareTo(abstractCostDriver.id) == 0 && children.equals(abstractCostDriver.children)) return true;
-        else return false;
+        return id.compareTo(abstractCostDriver.id) == 0 && children.equals(abstractCostDriver.children);
     }
 
     @Override
