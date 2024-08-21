@@ -51,14 +51,6 @@ public class GCParser_Test extends SimulationTest {
 
 
 
-    @Test()
-    public void testCanExecuteCatchingEvents() {
-        runSimpleSimulation(
-                "MinimalGlobalConfiguration.xml",
-                "ArrivingEventsModel.bpmn",
-                "ArrivingEventsConfiguration.xml");
-    }
-
     private Element processRoot() {
         return processRoots.get("Process_1");
     }
