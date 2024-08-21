@@ -11,19 +11,10 @@
     <packaging>jar</packaging>
 
     <name>cost_driver</name>
-    <dependencies>
-        <dependency>
+    <dependencies>        <dependency>
             <groupId>de.hpi.bpt</groupId>
             <artifactId>scylla</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.hpi.bpt</groupId>
-            <artifactId>scylla</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
