@@ -71,6 +71,7 @@ public class Utils {
      */
     public static List<SimulationConfiguration> CURRENT_SIMULATION_CONFIGURATIONS = new ArrayList<>();
 
+
     /**
      * Prepares the simulation environment by initializing the simulation manager,
      * loading global configurations, and loading simulation configurations.
@@ -247,4 +248,5 @@ public class Utils {
         }
         return null;
     }
+
 }

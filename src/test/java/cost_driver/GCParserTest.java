@@ -1,6 +1,8 @@
 package cost_driver;
 
+import de.hpi.bpt.scylla.SimulationTest;
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
+import de.hpi.bpt.scylla.plugin_loader.PluginLoader;
 import org.jdom2.JDOMException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,22 +16,25 @@ import static cost_driver.Utils.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
 //@SuppressWarnings("unchecked")
-class GCParserTest {
+class GCParserTest extends SimulationTest {
 
-    // TODO: make it work with actual .xml (any .xml)
     @Test
-    @DisplayName("Integration test")
-    void testParse_Integration() throws IOException, ScyllaValidationException, JDOMException {
-        prepareSimulation();
+    @DisplayName("GC Parser")
+    void testParse_GC() throws IOException, ScyllaValidationException, JDOMException {
+        PluginLoader.getDefaultPluginLoader().activateNone().loadPackage(Main.class.getPackageName());
+
+        runSimpleSimulation(
+                GLOBAL_CONFIGURATION_FILE,
+                SIMULATION_MODEL_FILE,
+                SIMULATION_CONFIGURATION_FILE);
 
         // Integrate the ACDs
-        Object obj = CURRENT_GLOBAL_CONFIGURATION.getExtensionAttributes().get("cost_driver_costDrivers");
+        Object obj = getGlobalConfiguration().getExtensionAttributes().get("cost_driver_costDrivers");
 
         if (obj instanceof ArrayList<?> list) {
             if (list.stream().allMatch(element -> element instanceof AbstractCostDriver)) {
                 List<AbstractCostDriver> abstractCostDriverList = (ArrayList<AbstractCostDriver>) list;
                 var expected = parseGC();
-                ArrayList<AbstractCostDriver> sd = parseGC();
                 for (int i = 0; i < abstractCostDriverList.size(); i++) {
                     if (!abstractCostDriverList.get(i).equals(expected.get(i))) {
                         fail("\nWrongly parsed ACD: " +
@@ -46,5 +51,10 @@ class GCParserTest {
                     "The Object is: " + obj.getClass());
         }
 
+    }
+
+    @Override
+    protected String getFolderName() {
+        return "Shipping";
     }
 }

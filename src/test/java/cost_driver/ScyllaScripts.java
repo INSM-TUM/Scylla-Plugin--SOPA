@@ -79,11 +79,11 @@ public class ScyllaScripts {
                 e.printStackTrace();
             }
 
-            runSimulation(
-                    globalConf,
-                    model,
-                    simConf,
-                    TEST_PATH + numClerks + "_" + numInstances + "_" + new SimpleDateFormat("yy_MM_dd_HH_mm_ss_SSS").format(new Date()) + "/");
+                runSimulation(
+                        globalConf,
+                        model,
+                        simConf,
+                        TEST_PATH + numClerks + "_" + numInstances + "_" + new SimpleDateFormat("yy_MM_dd_HH_mm_ss_SSS").format(new Date()) + "/");
 
         }
     }
@@ -98,5 +98,6 @@ public class ScyllaScripts {
         if (Objects.nonNull(outputPath)) manager.setOutputPath(outputPath);
         manager.run();
     }
+
 
 }

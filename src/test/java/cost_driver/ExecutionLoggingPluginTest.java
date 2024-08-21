@@ -2,11 +2,12 @@ package cost_driver;
 
 import de.hpi.bpt.scylla.SimulationTest;
 import de.hpi.bpt.scylla.exception.ScyllaRuntimeException;
-import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
-import org.jdom2.JDOMException;
+import de.hpi.bpt.scylla.plugin_loader.PluginLoader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -26,19 +27,58 @@ class ExecutionLoggingPluginTest extends SimulationTest {
 
     private final CostDriverExecutionLoggingPlugin EXECUTION_LOGGING_PLUGIN = new CostDriverExecutionLoggingPlugin();
     private List<AbstractCostDriver> TEST_ABSTRACT_DRIVER_LIST = new LinkedList<>();
-    private List<ConcreteCostDriver> CONCRETE_DRIVERS_1 = new LinkedList<>();
-    private List<ConcreteCostDriver> CONCRETE_DRIVERS_2 = new LinkedList<>();
     private GlobalConfiguration TEST_GLOBAL_CONFIG;
     private CostVariant TEST_COST_VARIANT;
 
     @Test
-    void testWriteToLog() throws IOException, ScyllaValidationException, JDOMException {
+    void testWriteToLog() throws IOException {
+        PluginLoader.getDefaultPluginLoader().activateNone().loadPackage(Main.class.getPackageName());
+        setGlobalSeed(-6156113099158504075L);
+        runSimpleSimulation(
+                GLOBAL_CONFIGURATION_FILE,
+                SIMULATION_MODEL_FILE,
+                SIMULATION_CONFIGURATION_FILE);
+
+        String expectedFileNameXML = normalizePath("./" + outputPath + "sustainability_global_information_statistic.xml");
+        String expectedFileNameXES = normalizePath("./" + outputPath + SIMULATION_MODEL_FILE);
+        Path filePathXML = Paths.get(expectedFileNameXML);
+        Path filePathXES = Paths.get(expectedFileNameXES.substring(0, expectedFileNameXES.lastIndexOf('.')).concat(".xes"));
+
+        // Read the content of both XML files as strings
+        String actualXML = new String(Files.readAllBytes(filePathXML));
+        String expectedXML = new String(Files.readAllBytes(Paths.get(normalizePath("./" + TEST_PATH + "/cost_driver_output/" + "sustainability_global_information_statistic.xml"))));
+
+        // Read the content of both XES files as strings
+        String actualXES = new String(Files.readAllBytes(filePathXES));
+        String expectedXES = new String(Files.readAllBytes(Paths.get(normalizePath("./" + TEST_PATH + "/cost_driver_output/" + "logistics_model_no_drivers.xes"))));
+
+        // Compare the XML files
+        Diff diffXML = DiffBuilder.compare(actualXML).withTest(expectedXML)
+                .ignoreWhitespace() // Ignores white spaces
+                .checkForSimilar() // Use similar to compare not identical (handles cases like attribute order)
+                .build();
+
+        // Compare the XES files
+        Diff diffXES = DiffBuilder.compare(actualXES).withTest(expectedXES)
+                .ignoreWhitespace() // Ignores white spaces
+                .checkForSimilar() // Use similar to compare not identical (handles cases like attribute order)
+                .build();
+
+        // Check if there are differences
+        if (diffXML.hasDifferences()) {
+            fail("Difference found: " + diffXML.getDifferences());
+        }
+        if (diffXES.hasDifferences()) {
+            fail("Difference found: " + diffXES.getDifferences());
+        }
 
     }
 
     @Test
     @DisplayName("File extension with gzipOn = false")
-    void testCorrectFileExtensionXES() {
+    void testCorrectFileExtensionXES() throws IOException {
+        PluginLoader.getDefaultPluginLoader().activateNone().loadPackage(Main.class.getPackageName());
+
         runSimpleSimulation(
                 GLOBAL_CONFIGURATION_FILE,
                 SIMULATION_MODEL_FILE,
@@ -53,8 +93,8 @@ class ExecutionLoggingPluginTest extends SimulationTest {
     }
 
     @Test
-    @DisplayName("Integration - Find Concrete Cost Driver")
-    void testFindConcreteCaseByCost_Integration() throws ScyllaValidationException, IOException {
+    @DisplayName("Find Concrete Cost Driver")
+    void testFindConcreteCaseByCost_Integration() throws IOException {
         ScyllaScripts.runMoockModels();
         CostDriverExecutionLoggingPlugin testSubject = new CostDriverExecutionLoggingPlugin();
 
@@ -96,6 +136,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
             }
         }
     }
+
     private void prepareCostVariant() {
         // Create CostVariant
         Map<String, Double> testConcretisedACD = new HashMap<>();
@@ -105,6 +146,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
 
         // Invalid LCAScore
         testConcretisedACD.put(TEST_ABSTRACT_DRIVER_LIST.get(1).getId(), Math.pow(new Random().nextDouble(), Math.pow(10, -5)));
+
 
         // Instantiate new CostVariant
         TEST_COST_VARIANT = new CostVariant("testID", 0.2, testConcretisedACD);
