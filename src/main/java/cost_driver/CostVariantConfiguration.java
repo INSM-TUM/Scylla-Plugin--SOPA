@@ -8,7 +8,7 @@ public class CostVariantConfiguration {
 
     protected Integer count;
     protected List<CostVariant> costVariantList;
-    protected List<CostVariant> costVariantListConfigured;
+    protected Stack<CostVariant> costVariantListConfigured;
 
     /**
      * Constructor's logic is derived from
@@ -27,10 +27,10 @@ public class CostVariantConfiguration {
         this.count = count;
         this.costVariantList = costVariantList;
 
-        this.costVariantListConfigured = new ArrayList<>();
+        this.costVariantListConfigured = new Stack<>();
         this.costVariantList.forEach(costVariant ->
                 IntStream.range(0, (int) Math.round(costVariant.frequency * count))
-                        .forEach(i -> costVariantListConfigured.add(costVariant))
+                        .forEach(i -> costVariantListConfigured.push(costVariant))
         );
 
         Collections.shuffle(costVariantListConfigured, new Random());
@@ -45,7 +45,7 @@ public class CostVariantConfiguration {
         return costVariantList;
     }
 
-    public List<CostVariant> getCostVariantListConfigured() {
+    public Stack<CostVariant> getCostVariantListConfigured() {
         return costVariantListConfigured;
     }
 }

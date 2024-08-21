@@ -42,6 +42,24 @@
             <version>2.6.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.deckfour</groupId>
+            <artifactId>openxes</artifactId>
+            <version>20160212</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.deckfour</groupId>
+            <artifactId>openxes-xstream</artifactId>
+            <version>20160212</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.deckfour</groupId>
+            <artifactId>ospex</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>

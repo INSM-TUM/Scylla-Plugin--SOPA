@@ -59,7 +59,7 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
         /***
          * Parse Concretised abstract cost drivers in tasks
          */
-        Map<Integer, String> costDrivers = new HashMap<>();
+        Map<Integer, List<String>> costDrivers = new HashMap<>();
         // get all cost drivers
         List<Element> elements = sim.getChildren().stream().filter(c -> c.getChild("costDrivers", bsimNamespace) != null).toList();
 
@@ -78,7 +78,10 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
                 continue; // no matching element in process, so skip definition
             }
 
-            String costDriver = el.getChild("costDrivers", bsimNamespace).getChild("costDriver", bsimNamespace).getAttributeValue("id");
+            List<String> costDriver = new ArrayList<>();
+            for (Element element: el.getChild("costDrivers", bsimNamespace).getChildren()) {
+                if (element.getName().equals("costDriver")) costDriver.add(element.getAttributeValue("id"));
+            }
             costDrivers.put(nodeId, costDriver);
 
         }

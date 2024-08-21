@@ -48,5 +48,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test:2.6.4" level="project" />
+    <orderEntry type="library" name="Maven: org.deckfour:openxes:20160212" level="project" />
+    <orderEntry type="library" name="Maven: org.deckfour:openxes-xstream:20160212" level="project" />
+    <orderEntry type="library" name="Maven: org.deckfour:ospex:1.0" level="project" />
   </component>
 </module>
