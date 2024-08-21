@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>de.hpi.bpt</groupId>
+    <groupId>org.example</groupId>
     <artifactId>cost_driver</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
