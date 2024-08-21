@@ -120,6 +120,13 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             Map<String, Map<String, List<Double>>> averageCostEachActivityMap = new HashMap<>();
 
             /**
+             * activity -> cost variant -> CCD
+             * activity -> ACD
+             * */
+            Map<String, Map<String, List<String>>> activityCostVariantACDMap = new HashMap<>();
+            Map<String, List<String>> activity2ACD = new HashMap<>();
+
+            /**
              * Preparation of writing to xml
              * */
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -147,7 +154,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
 
                 List<ProcessNodeInfo> nodeInfoList = nodeInfos.get(processInstanceId);
                 Map<String, Object> nodeID2costDriversMap = (Map<String, Object>) simulationConfiguration.getExtensionAttributes().get("cost_driver_costDrivers");
-                List<String> listOfCCDID = new ArrayList<>();
+
                 AtomicReference<Double> totalCostPerInstance = new AtomicReference<>(0.0);
 
                 for (ProcessNodeInfo info : nodeInfoList) {
@@ -167,6 +174,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                             factory.createAttributeTimestamp(XTimeExtension.KEY_TIMESTAMP, timestamp, timeExt));
 
                     String taskName = info.getTaskName();
+
                     attributeMap.put(XConceptExtension.KEY_NAME,
                             factory.createAttributeLiteral(XConceptExtension.KEY_NAME, taskName, conceptExt));
 
@@ -178,16 +186,13 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     //Preparation for taskCost
                     Double taskCost = 0.0;
 
-                    if (nodeID2costDriversMap.get(info.getId()) != null) {
-                        listOfCCDID = (List<String>) nodeID2costDriversMap.get(info.getId());
-                    } else {
-                        listOfCCDID.clear();
-                    }
+                    List<String> listOfCCDID = (List<String>) nodeID2costDriversMap.get(info.getId());
+                    List<String> CCDId = new ArrayList<>();
 
-                    if (!listOfCCDID.isEmpty()) {
+                    if (listOfCCDID != null) {
                         listOfCCDID.forEach(i -> concreteCostId2ObjectMap.put(i, findConcreteCaseByCost(model.getGlobalConfiguration(), costVariant, i)));
 
-                        info.SetDataObjectField(concreteCostId2ObjectMap); //nodeInfoList.stream().filter(i -> i.getId().equals(info.getId())).findFirst().get().SetDataObjectField(concreteCostId2ObjectMap);
+                        info.SetDataObjectField(concreteCostId2ObjectMap);
 
                         Map<String, Object> dataObjects = info.getDataObjectField();
                         for (String d0: dataObjects.keySet()) {
@@ -195,9 +200,16 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                                     organizationalExt));
 
                             ConcreteCostDriver ccd = (ConcreteCostDriver) dataObjects.get(d0);
+                            CCDId.add(ccd.getId());
                             taskCost += ccd.getLCAScore();
                         }
                     }
+
+                    //Add task CCD to activityCostVariantACDMap
+                    if (!activityCostVariantACDMap.containsKey(taskName)) activityCostVariantACDMap.put(taskName, new HashMap<>());
+                    if (!activityCostVariantACDMap.get(taskName).containsKey(costVariant.getId())) activityCostVariantACDMap.get(taskName).put(costVariant.getId(), CCDId);
+
+                    if (!activity2ACD.containsKey(taskName)) activity2ACD.put(taskName, listOfCCDID);
 
                     ProcessNodeTransitionType transition = info.getTransition();
                     if (transition == ProcessNodeTransitionType.BEGIN
@@ -294,6 +306,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             for (String act:averageCostEachActivityMap.keySet()) {
                 Element activity = doc.createElement(act.replace(' ', '_'));
 
+
                 //Create activity cost list
                 Element activityCost = doc.createElement(act.replace(' ', '_') + "_average_cost");
                 List<Double> costInDifferentCostVariantEachActivity = new ArrayList<>();
@@ -309,9 +322,13 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     //Add cost in different costVariant with different activity into a list
                     costInDifferentCostVariantEachActivity.addAll(averageCostEachActivityMap.get(act).get(scen));
 
-                    //
+                    //Add individual cost to different activity
                     Element individualCostWithDifferentCostVariant = doc.createElement(scen.replace(' ', '_'));
+
+                    if (activity2ACD.get(act) != null) individualActivityCost.setAttribute("ACD", activity2ACD.get(act).toString().replace("[","").replace("]", ""));
+                    if (activityCostVariantACDMap.get(act).get(scen) != null && !activityCostVariantACDMap.get(act).get(scen).isEmpty())  individualCostWithDifferentCostVariant.setAttribute("CCD", activityCostVariantACDMap.get(act).get(scen).toString().replace("[", "").replace("]", ""));
                     individualActivityCost.appendChild(individualCostWithDifferentCostVariant);
+
                     for (Double cost : averageCostEachActivityMap.get(act).get(scen)) {
                         Element individualInstanceCost = doc.createElement("cost");
                         individualInstanceCost.setTextContent(String.valueOf(cost));
@@ -322,6 +339,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 activityCost.setTextContent(String.valueOf(costInDifferentCostVariantEachActivity.stream().mapToDouble(i -> i).average().orElse(0.0)));
                 activity.appendChild(activityCost);
 
+                //Add individual cost into log under "Individual_Cost_Per_Instance"
                 acitivityAverageCost.appendChild(activity);
                 individualCostPerInstance.appendChild(individualActivityCost);
             }
