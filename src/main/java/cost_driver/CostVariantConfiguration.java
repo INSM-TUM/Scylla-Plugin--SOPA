@@ -1,14 +1,17 @@
 package cost_driver;
 
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
+import org.springframework.lang.NonNull;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class CostVariantConfiguration {
-
+    @NonNull
     private Integer count;
+    @NonNull
     private List<CostVariant> costVariantList;
+    @NonNull
     private final Stack<CostVariant> costVariantListConfigured;
 
     /**
@@ -21,10 +24,11 @@ public class CostVariantConfiguration {
      * 3. Add the cost variant to the list of configured cost variants as many times as the result of step 2
      * 4. Shuffle the list of configured cost variants
      *
-     * @param count: number of simulation runs
+     * @param count:           number of simulation runs
      * @param costVariantList: list of parsed cost variants from the simulation configuration
+     * @param seed:            Used to "predict" the same order of configurations
      */
-    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList, Long seed) throws ScyllaValidationException {
+    public CostVariantConfiguration(@NonNull Integer count, @NonNull List<CostVariant> costVariantList, @NonNull Long seed) throws ScyllaValidationException {
         this.count = count;
         this.costVariantList = costVariantList;
 
@@ -39,7 +43,8 @@ public class CostVariantConfiguration {
         );
 
         Collections.shuffle(costVariantListConfigured, new Random(seed));
-        System.out.println("Size of configured cost variant list: " + costVariantListConfigured.size());
+        // For debugging purpose
+//        System.out.println("Size of configured cost variant list: " + costVariantListConfigured.size());
     }
 
     public Integer getCount() {

@@ -11,7 +11,7 @@ public class AbstractCostDriver extends CostDriver {
     @NonNull
     protected List<ConcreteCostDriver> children;
 
-    public AbstractCostDriver(String id, @NonNull List<ConcreteCostDriver> children) {
+    public AbstractCostDriver(@NonNull String id, @NonNull List<ConcreteCostDriver> children) {
         super(id);
         this.children = children;
     }

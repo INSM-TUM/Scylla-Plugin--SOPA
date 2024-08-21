@@ -1,10 +1,11 @@
 package cost_driver;
 
+import org.springframework.lang.NonNull;
+
 public abstract class CostDriver {
+    @NonNull
     protected String id;
-
-
-    protected CostDriver(String id){
+    protected CostDriver(@NonNull String id){
         this.id = id;
     }
 

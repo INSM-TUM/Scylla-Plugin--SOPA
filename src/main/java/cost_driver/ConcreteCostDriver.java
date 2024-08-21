@@ -2,17 +2,20 @@ package cost_driver;
 
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.configuration.distribution.TimeDistributionWrapper;
+import org.springframework.lang.NonNull;
 
 public class ConcreteCostDriver extends CostDriver {
+    @NonNull
     protected CostDriver parent;
+    @NonNull
     protected Double LCAScore;
 
-    public ConcreteCostDriver(String id, CostDriver parent, Double LCAScore) throws ScyllaValidationException {
+    public ConcreteCostDriver(@NonNull String id, @NonNull CostDriver parent, @NonNull Double LCAScore) throws ScyllaValidationException {
         super(id);
         if (parent instanceof AbstractCostDriver) {
             this.parent = parent;
         } else {
-            throw new ScyllaValidationException("Parent cost driver is not abstract");
+            throw new ScyllaValidationException("Parent cost driver is abstract c");
         }
 
         this.LCAScore = LCAScore;
