@@ -98,7 +98,6 @@ jobs:
           allowUpdates: true
 
 
-
   Deploy:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && github.repository == 'INSM-TUM-Teaching/cost_driver'
     runs-on: ubuntu-latest
