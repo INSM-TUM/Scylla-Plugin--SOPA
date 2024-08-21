@@ -1,4 +1,7 @@
+package cost_driver;
+
 import cost_driver.CostDriverGCParserPlugin;
+import cost_driver.SimulationTest;
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.configuration.SimulationConfiguration;
 import org.jdom2.JDOMException;
@@ -20,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class GCParser_Test extends SimulationTest {
+public class GCParserTest extends SimulationTest {
     public static void main(String[] args) {
         try {
-            new SCParser_Test().testSCIsParsed();
+            new SCParserTest().testSCIsParsed();
         } catch (Throwable e) {
             e.printStackTrace();
         }
