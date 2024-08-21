@@ -108,3 +108,20 @@ jobs:
       - name: Set Release version env variable
         run: |
           echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Create .zip
+        run: |
+          cd ./target/
+          mv ./*.jar ./cost_driver.jar
+          zip -r ../cost_driver.zip ./*.jar ./libs/*
+          cd ..
+
+      - name: Upload Zip
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          artifacts: "cost_driver.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{env.RELEASE_VERSION}}
+          commit: 'main'
+          allowUpdates: true
+
