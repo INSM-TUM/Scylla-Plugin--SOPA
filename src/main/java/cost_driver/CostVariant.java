@@ -27,4 +27,8 @@ public class CostVariant {
     public Map<String, Double> getConcretisedACD() {
         return concretisedACD;
     }
+
+    public Double getSum() {
+        return concretisedACD.values().stream().mapToDouble(i -> i).sum();
+    }
 }

@@ -82,6 +82,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             classifiers.add(new XEventAttributeClassifier("Event Name AND Resource", XConceptExtension.KEY_NAME,
                     XOrganizationalExtension.KEY_RESOURCE));
             classifiers.add(new XEventAttributeClassifier("Cost Driver", "cost:driver"));
+            classifiers.add(new XEventAttributeClassifier("Cost Variant", "cost:variant"));
+            classifiers.add(new XEventAttributeClassifier("Total Cost", "total:cost"));
             log.getClassifiers().addAll(classifiers);
 
             log.getAttributes().put("source", factory.createAttributeLiteral("source", "Scylla", null));
@@ -106,6 +108,13 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 CostVariant costVariant = costVariantList.pop();
                 trace.getAttributes().put("cost:variant", factory
                         .createAttributeLiteral("cost:variant", costVariant.getId(), conceptExt));
+
+                /**
+                 * add <string key=”total cost” value=”<LCA score>”/>
+                 * */
+                Double sum = costVariant.getSum();
+                trace.getAttributes().put("total:cost", factory
+                        .createAttributeLiteral("total:cost", String.valueOf(sum), conceptExt));
 
                 List<ProcessNodeInfo> nodeInfoList = nodeInfos.get(processInstanceId);
                 Map<String, Object> nodeID2costDriversMap = (Map<String, Object>) simulationConfiguration.getExtensionAttributes().get("cost_driver_costDrivers");
