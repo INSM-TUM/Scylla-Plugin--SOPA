@@ -2,7 +2,7 @@
 <bsim:definitions xmlns:bsim="http://bsim.hpi.uni-potsdam.de/scylla/simModel" targetNamespace="http://www.hpi.de">
   <bsim:simulationConfiguration id="logistics_sim" startDateTime="2023-12-25T09:00+01:00" processRef="Process_0vv8a1n" processInstances="10">
 
-    <bsim:costVariantConfig count="100">
+    <bsim:costVariantConfig>
       <bsim:variant id="Shipment and delivery over distance A" frequency="0.2">
         <bsim:driver id="Delivery" cost="0.00002843"/>
         <bsim:driver id="Filling Material" cost="0.00001468"/>

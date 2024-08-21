@@ -23,7 +23,7 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
           */
         Namespace bsimNamespace = sim.getNamespace();
         Element costVariantConfig = sim.getChildren("costVariantConfig", bsimNamespace).get(0);
-        Integer count = Integer.valueOf(costVariantConfig.getAttributeValue("count"));
+        Integer count = Integer.valueOf(sim.getAttributeValue("processInstances"));
 
         Map<String, Object> extensionAttributes = new HashMap<>();
         List<CostVariant> costVariantList = new ArrayList<>();

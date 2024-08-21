@@ -2,7 +2,7 @@
 <bsim:definitions xmlns:bsim="http://bsim.hpi.uni-potsdam.de/scylla/simModel" targetNamespace="http://www.hpi.de">
   <bsim:simulationConfiguration id="hiring_process_sim" startDateTime="2017-10-01T09:00+01:00" processRef="Process_1" processInstances="10">
 
-    <bsim:costVariantConfig count="100">
+    <bsim:costVariantConfig>
       <bsim:variant id="standard procedure" frequency="0.5">
         <bsim:driver id="Request for job advertisement" cost="0.0000391"/>
         <bsim:driver id="In-house mail" cost="0.0000391"/>
