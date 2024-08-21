@@ -15,30 +15,30 @@
   </bsim:resourceData>
   <bsim:costDriver>
     <bsim:abstractCostDriver id="Delivery" >
-      <bsim:concreteCostDeiver id="Delivery_B_Small_Lorry" LCAScores="0.00005524"/>
-      <bsim:concreteCostDeiver id="Delivery_A_Small_Lorry" LCAScores="0.00003683"/>
-      <bsim:concreteCostDeiver id="Delivery_A_Lorry" LCAScores="0.00002843"/>
-      <bsim:concreteCostDeiver id="Delivery_B_Lorry" LCAScores="0.00004265"/>
+      <bsim:concreteCostDeiver id="Delivery_B_Small_Lorry" cost="0.00005524"/>
+      <bsim:concreteCostDeiver id="Delivery_A_Small_Lorry" cost="0.00003683"/>
+      <bsim:concreteCostDeiver id="Delivery_A_Lorry" cost="0.00002843"/>
+      <bsim:concreteCostDeiver id="Delivery_B_Lorry" cost="0.00004265"/>
     </bsim:abstractCostDriver>
     <bsim:abstractCostDriver id="Filling Material">
-      <bsim:concreteCostDeiver id="Filling_A" LCAScores="0.00001468"/>
+      <bsim:concreteCostDeiver id="Filling_A" cost="0.00001468"/>
     </bsim:abstractCostDriver>
     <bsim:abstractCostDriver id="Packaging Material">
-      <bsim:concreteCostDeiver id="Packaging_Material_A" LCAScores="0.00007611"/>
-      <bsim:concreteCostDeiver id="Packaging_Material_B" LCAScores="0.00003806"/>
+      <bsim:concreteCostDeiver id="Packaging_Material_A" cost="0.00007611"/>
+      <bsim:concreteCostDeiver id="Packaging_Material_B" cost="0.00003806"/>
     </bsim:abstractCostDriver>
     <bsim:abstractCostDriver id="Re-Routing">
-      <bsim:concreteCostDeiver id="Re-Routing_A_Lorry" LCAScores="0.000008529"/>
-      <bsim:concreteCostDeiver id="Re-Routing_A_Small_Lorry" LCAScores="0.00001105"/>
+      <bsim:concreteCostDeiver id="Re-Routing_A_Lorry" cost="0.000008529"/>
+      <bsim:concreteCostDeiver id="Re-Routing_A_Small_Lorry" cost="0.00001105"/>
     </bsim:abstractCostDriver>
     <bsim:abstractCostDriver id="Receipt">
-      <bsim:concreteCostDeiver id="Receipt" LCAScores="0.00001153"/>
+      <bsim:concreteCostDeiver id="Receipt" cost="0.00001153"/>
     </bsim:abstractCostDriver>
     <bsim:abstractCostDriver id="Shipment">
-      <bsim:concreteCostDeiver id="Shipment_A_Lorry" LCAScores="0.00007839"/>
-      <bsim:concreteCostDeiver id="Shipment_A_Rail_Electric" LCAScores="0.0000000253"/>
-      <bsim:concreteCostDeiver id="Shipment_B_Lorry" LCAScores="0.0001568"/>
-      <bsim:concreteCostDeiver id="Shipment_B_Rail_Electric" LCAScores="0.0000000506"/>
+      <bsim:concreteCostDeiver id="Shipment_A_Lorry" cost="0.00007839"/>
+      <bsim:concreteCostDeiver id="Shipment_A_Rail_Electric" cost="0.0000000253"/>
+      <bsim:concreteCostDeiver id="Shipment_B_Lorry" cost="0.0001568"/>
+      <bsim:concreteCostDeiver id="Shipment_B_Rail_Electric" cost="0.0000000506"/>
     </bsim:abstractCostDriver>
   </bsim:costDriver>
 </bsim:globalConfiguration>

@@ -19,33 +19,33 @@
     <bsim:dynamicResource id="Staff council" defaultQuantity="3" defaultCost="10.0" defaultTimetableId="Standard" defaultTimeUnit="HOURS" />
   </bsim:resourceData>
   <bsim:costDriver>
-    <bsim:abstractCostDriver id="Request for job advertisement" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="paper" LCAScores="0.0000289"/>
-      <bsim:concreteCostDeiver id="digital" LCAScores="0.0000195"/>
+    <bsim:abstractCostDriver id="Request for job advertisement">
+      <bsim:concreteCostDeiver id="paper" cost="0.0000289"/>
+      <bsim:concreteCostDeiver id="digital" cost="0.0000195"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="In-house mail" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="car" LCAScores="0.0000391"/>
-      <bsim:concreteCostDeiver id="electronic bicycle" LCAScores="0.00000422"/>
-      <bsim:concreteCostDeiver id="digital" LCAScores="0.0000000195"/>
+    <bsim:abstractCostDriver id="In-house mail">
+      <bsim:concreteCostDeiver id="car" cost="0.0000391"/>
+      <bsim:concreteCostDeiver id="electronic bicycle" cost="0.00000422"/>
+      <bsim:concreteCostDeiver id="digital" cost="0.0000000195"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Advertisement" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="paper" LCAScores="0.0000219"/>
-      <bsim:concreteCostDeiver id="digital" LCAScores="0.0000195"/>
+    <bsim:abstractCostDriver id="Advertisement">
+      <bsim:concreteCostDeiver id="paper" cost="0.0000291"/>
+      <bsim:concreteCostDeiver id="digital" cost="0.00001.95"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Sifting" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="computer" timeUnit= "6" LCAScores="0.0000585"/>
-      <bsim:concreteCostDeiver id="computer_lessStrict" timeUnit="3" LCAScores="0.0000293"/>
+    <bsim:abstractCostDriver id="Sifting">
+      <bsim:concreteCostDeiver id="computer" timeUnit= "6" cost="0.0000585"/>
+      <bsim:concreteCostDeiver id="computer_lessStrict" timeUnit="3" cost="0.0000293"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Interview" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="video conference" timeUnit="1" LCAScores="0.000035"/>
+    <bsim:abstractCostDriver id="Interview">
+      <bsim:concreteCostDeiver id="video conference" timeUnit="1" cost="0.000035"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Application for employee" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="paper" LCAScores="0.0000431"/>
-      <bsim:concreteCostDeiver id="digital" LCAScores="0.0000195"/>
+    <bsim:abstractCostDriver id="Application for employee">
+      <bsim:concreteCostDeiver id="paper" cost="0.0000431"/>
+      <bsim:concreteCostDeiver id="digital" cost="0.0000195"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Contract documents" defaultTimeUnit="HOURS">
-      <bsim:concreteCostDeiver id="paper" LCAScores="0.0000254"/>
-      <bsim:concreteCostDeiver id="digital" LCAScores="0.0000195"/>
+    <bsim:abstractCostDriver id="Contract documents">
+      <bsim:concreteCostDeiver id="paper" cost="0.0000254"/>
+      <bsim:concreteCostDeiver id="digital" cost="0.0000195"/>
     </bsim:abstractCostDriver>
   </bsim:costDriver>
 </bsim:globalConfiguration>
