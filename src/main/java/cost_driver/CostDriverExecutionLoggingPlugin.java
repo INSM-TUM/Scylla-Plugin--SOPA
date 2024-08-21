@@ -105,10 +105,17 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             CostVariantConfiguration costVariants = (CostVariantConfiguration) simulationConfiguration.getExtensionAttributes().get("cost_driver_CostVariant");
             Stack<CostVariant> costVariantStack = costVariants.getCostVariantListConfigured();
 
-            //Preparation for Average Cost
+            /**
+             * Preparation for Average Cost Calculation
+             * Scenario -> List of total costs
+             */
             Map<String, List<AtomicReference<Double>>> InstancesCostVariant2TotalCostMap = new HashMap<>();
 
-            //Preparation for average cost for each activity
+
+            /**
+             * Preparation for average cost for each activity
+             * task name -> scenario -> costs
+             * */
             Map<String, Map<String, List<AtomicReference<Double>>>> averageCostEachActivityMap = new HashMap<>();
 
             /**
