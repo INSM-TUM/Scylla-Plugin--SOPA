@@ -63,14 +63,8 @@ jobs:
           
           # Create the target directory if it doesn't exist
           mkdir -p $TARGET_DIR
-          
-          # Download the zip file
           wget $SCYLLA_URL -O scylla.zip
-          
-          # Unpack the zip file
           unzip scylla.zip
-          
-          # Move the JAR files to the target directory
           mv scylla.jar $TARGET_DIR
           mv scylla-tests.jar $TARGET_DIR
 
