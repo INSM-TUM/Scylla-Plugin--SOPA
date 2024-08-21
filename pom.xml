@@ -16,15 +16,14 @@
             <groupId>de.hpi.bpt</groupId>
             <artifactId>scylla</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>de.hpi.bpt</groupId>
             <artifactId>scylla</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <type>test-jar</type>
-            <scope>system</scope>
-            <systemPath>${basedir}/scylla/scylla-0.0.1-SNAPSHOT-tests.jar</systemPath>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -97,6 +96,7 @@
             <version>2.3.0</version>
         </dependency>
     </dependencies>
+
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
