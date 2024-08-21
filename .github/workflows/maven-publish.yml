@@ -9,7 +9,20 @@ on:
   push:
     branches: [ main ]
 
+  name: Pull request labeler
+  on: [ pull_request_target ]
+
 jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
   Release:
     if: github.repository == 'INSM-TUM-Teaching/cost_driver'  # Only main repo has permissions to publish this
 
