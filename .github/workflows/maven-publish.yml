@@ -91,13 +91,13 @@ jobs:
           echo "RELEASE_VERSION=$(cat pom.xml | grep '<version>' | head -1 | sed 's/<version>//' | sed 's/<\/version>//')" >> $GITHUB_ENV
 
       - name: Upload Zip
-        uses: ncipollo/release-action@v1.12.0
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: "cost_driver.zip"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{env.RELEASE_VERSION}}
-          commit: 'main'
-          allowUpdates: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: cost_driver.zip
+          asset_name: cost_driver.zip
+          tag: ${{ env.RELEASE_VERSION }}
+          overwrite: true
 
 
   Deploy:
