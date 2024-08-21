@@ -36,7 +36,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
   Release:
-    if: github.repository == 'INSM-TUM-Teaching/cost_driver'  # Only main repo has permissions to publish this
+    if: github.repository == 'INSM-TUM-Teaching/Simulator-Extension-SOPA'  # Only main repo has permissions to publish this
 
     runs-on: ubuntu-latest
     permissions:
