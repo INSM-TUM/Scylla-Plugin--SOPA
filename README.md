@@ -62,9 +62,9 @@ Three Plugins are cooperating to achieve this.
 Parses the global config file which describes the abstract CDs and their children, concreteCDs with details that it consists of:
 ```ruby
 <bsim:costDriver>
-    <bsim:abstractCostDriver id="Delivery">
-      <bsim:concreteCostDeiver id="Delivery_B_Small_Lorry" cost="0.00005524"/>
-      <bsim:concreteCostDeiver id="Delivery_B_Lorry" cost="0.00004265"/>
+    <bsim:abstractCostDriver id="[Abstract Cost Driver ID]">
+      <bsim:concreteCostDeiver id="[Concrete Cost Driver ID]" cost="[LCA Score]"/>
+      <bsim:concreteCostDeiver id="[Concrete Cost Driver ID]" cost="[LCA Score]"/>
 	...
     </bsim:abstractCostDriver>
 	...
