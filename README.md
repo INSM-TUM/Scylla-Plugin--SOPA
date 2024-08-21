@@ -85,20 +85,19 @@ The results will be shown in two files, *.xes and *_statistic.xml.
 The event log is composed of a sequence of activity instances. We put the activity cost, process cost reference Abstract Cost Driver, and Concrete Cost Driver inside so that the utilization of resources used is clear.
 ```ruby
 <trace>
-		<string key="concept:name" value="cost[Process_Instance_ID]"/>
-		<string key="cost:Process_Instance" value="[Total Cost]"/>
-		<string key="cost:variant" value=[Cost Variant A]/>
-		...
-		<event>
-			<string key="cost:driver" value=[Abstract Cost Driver(Concrete Cost Driver): [cost]]/>
-			<string key="cost:driver" value=[Abstract Cost Driver(Concrete Cost Driver): [cost]]/>
-			<string key="concept:name" value=[Activity]]/>
-			<string key="lifecycle:transition" value="start"/>
-			<date key="time:timestamp" value="2023-12-25T09:00:00+01:00"/>
-			<string key="cost:activity" value=[activity cost]/>
-		</event>
-		...
-	</trace>
+	<string key="concept:name" value="cost[Process_Instance_ID]"/>
+	<string key="cost:Process_Instance" value="[Total Cost]"/>
+	<string key="cost:variant" value=[Cost Variant A]/>
+	<event>
+		<string key="cost:driver" value=[Abstract Cost Driver(Concrete Cost Driver): [cost]]/>
+		<string key="cost:driver" value=[Abstract Cost Driver(Concrete Cost Driver): [cost]]/>
+		<string key="concept:name" value=[Activity]]/>
+		<string key="lifecycle:transition" value="start"/>
+		<date key="time:timestamp" value="2023-12-25T09:00:00+01:00"/>
+		<string key="cost:activity" value=[activity cost]/>
+	</event>
+	...
+</trace>
 ```
 ### Aggregated sustainability information (enclosed with _statistic.xml)
 The outputted file shows a complete detailed breakdown of sustainability info.
@@ -127,8 +126,6 @@ Explanation of nodes moving downwards:
         ...
     </Activity_Instance_Cost>
 </Sustainability_Info>
-
-
 ```
 
 ## References: <br>
