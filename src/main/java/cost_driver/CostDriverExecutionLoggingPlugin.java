@@ -296,9 +296,9 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             List<Double> instanceCosts = new ArrayList<>();
             for (String costVariant:instancesCostVariant2TotalCostMap.keySet()) {
                 averageTotalCostMap.put(costVariant, instancesCostVariant2TotalCostMap.get(costVariant).stream().mapToDouble(i -> i.get()).average().orElse(0.0));
-                //log.getAttributes().put(costVariant, factory.createAttributeLiteral(costVariant, String.valueOf(averageTotalCostMap.get(costVariant)), null));
 
-                Element cv = doc.createElement(costVariant.replace(' ', '_'));
+                Element cv = doc.createElement("Average_Cost_Variant_Cost");
+                cv.setAttribute("id", costVariant.replace(' ', '_'));
                 cv.setTextContent(String.valueOf(averageTotalCostMap.get(costVariant)));
                 rootElement.appendChild(cv);
 
@@ -312,25 +312,28 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             rootElement.appendChild(tcv);
 
             //Calculate all traces average cost per activities and put them into xml
-            Element acitivityAverageCost = doc.createElement("Activity_Average_Cost");
+            Element acitivityAverageCost = doc.createElement("Activity_Cost");
 
 
             //Create other element for not aggregated data
             Element individualCostPerInstance = doc.createElement("Activity_Instance_Cost");
 
             for (String act:averageCostEachActivityMap.keySet()) {
-                Element activity = doc.createElement(act.replace(' ', '_'));
-
+                Element activity = doc.createElement("Activity");
+                activity.setAttribute("id", act.replace(' ', '_'));
 
                 //Create activity cost list
-                Element activityCost = doc.createElement(act.replace(' ', '_') + "_average_activity_cost");
+                Element activityCost = doc.createElement( "Activity_Average_Cost");
+                activityCost.setAttribute("id", act.replace(' ', '_'));
                 List<Double> costInDifferentCostVariantEachActivity = new ArrayList<>();
 
                 //Create individual activity cost
-                Element individualActivityCost = doc.createElement(act.replace(' ', '_'));
+                Element individualActivityCost = doc.createElement("Activity");
+                individualActivityCost.setAttribute("id", act.replace(' ', '_'));
 
                 for (String scen: averageCostEachActivityMap.get(act).keySet()) {
-                    Element scenario = doc.createElement(scen.replace(' ', '_'));
+                    Element scenario = doc.createElement("Activity_Average_Cost_Variant_Cost");
+                    scenario.setAttribute("id", scen.replace(' ', '_'));
                     scenario.setTextContent(String.valueOf(averageCostEachActivityMap.get(act).get(scen).stream().mapToDouble(i -> i).average().orElse(0.0)));
                     activity.appendChild(scenario);
 
@@ -338,7 +341,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     costInDifferentCostVariantEachActivity.addAll(averageCostEachActivityMap.get(act).get(scen));
 
                     //Add individual cost to different activity
-                    Element individualCostWithDifferentCostVariant = doc.createElement(scen.replace(' ', '_'));
+                    Element individualCostWithDifferentCostVariant = doc.createElement("Cost_Variant");
+                    individualCostWithDifferentCostVariant.setAttribute("id", scen.replace(' ', '_'));
 
                     if (activity2ACD.get(act) != null) individualActivityCost.setAttribute("ACD", activity2ACD.get(act).toString().replace("[","").replace("]", ""));
                     if (activityCostVariantACDMap.get(act).get(scen) != null && !activityCostVariantACDMap.get(act).get(scen).isEmpty())  individualCostWithDifferentCostVariant.setAttribute("CCD", activityCostVariantACDMap.get(act).get(scen).toString().replace("[", "").replace("]", ""));
