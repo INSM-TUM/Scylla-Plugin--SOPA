@@ -10,34 +10,6 @@
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>
-                                de.hpi.bpt.scylla.Scylla
-                            </mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <name>cost_driver</name>
     <dependencies>
         <dependency>
@@ -45,12 +17,14 @@
             <artifactId>scylla</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>/Users/chuuun/IdeaProjects/BearCrow(private)/scylla/scylla.jar</systemPath>
+            <systemPath>C:/Users/Mihail/IdeaProjects/BearCrow-private/scylla/scylla.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom2</artifactId>
-            <version>2.0.6</version>
+            <groupId>de.hpi.bpt</groupId>
+            <artifactId>scylla</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -106,11 +80,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.hpi.bpt</groupId>
-            <artifactId>cost_driver</artifactId>
-            <version>0.0.1</version>
-            <type>test-jar</type>
-            <scope>test</scope>
+            <groupId>desmoj</groupId>
+            <artifactId>desmoj</artifactId>
+            <version>2.5.1e</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

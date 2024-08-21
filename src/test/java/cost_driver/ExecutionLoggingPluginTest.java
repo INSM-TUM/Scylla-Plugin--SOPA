@@ -19,9 +19,11 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cost_driver.TestUtils.*;
+import static cost_driver.Utils.*;
 import static de.hpi.bpt.scylla.Scylla.normalizePath;
 import static org.junit.jupiter.api.Assertions.*;
+import de.hpi.bpt.scylla.SimulationTest;
+
 
 class ExecutionLoggingPluginTest extends SimulationTest {
 
@@ -36,7 +38,11 @@ class ExecutionLoggingPluginTest extends SimulationTest {
 
     @Test
     void testWriteToLog(){
-        // Empty
+        runSimpleSimulation(GLOBAL_CONFIGURATION,
+                SIMULATION_MODEL,
+                SIMULATION_CONFIGURATION);
+        var i = simulationManager.getGlobalConfiguration();
+        var stop = "sop";
     }
 
     @Test
@@ -123,7 +129,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
             ConcreteCostDriver actualCCD = (ConcreteCostDriver) findConcreteCaseByCost.invoke(testSubject, testGlobalConfig, testCostVariant, "test2");
             fail("The ScyllaRuntimeException must be thrown for the invalid CCD.");
         }catch (ScyllaRuntimeException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            String actualError = e.getCause().getClass().getSimpleName();
+//            String actualError = e.getCause().getClass().getSimpleName();
             if(!(e.getCause() instanceof ScyllaRuntimeException)){
                 fail("ScyllaRuntimeException is thrown for a valid CCD.");
             }
