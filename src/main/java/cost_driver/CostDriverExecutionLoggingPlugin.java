@@ -1,8 +1,5 @@
 package cost_driver;
 
-import java.time.ZonedDateTime;
-import java.util.*;
-
 import de.hpi.bpt.scylla.exception.ScyllaRuntimeException;
 import de.hpi.bpt.scylla.logger.ProcessNodeInfo;
 import de.hpi.bpt.scylla.logger.ProcessNodeTransitionType;
@@ -12,8 +9,6 @@ import de.hpi.bpt.scylla.plugin_type.logger.OutputLoggerPluggable;
 import de.hpi.bpt.scylla.simulation.ProcessSimulationComponents;
 import de.hpi.bpt.scylla.simulation.SimulationModel;
 import de.hpi.bpt.scylla.simulation.utils.DateTimeUtils;
-
-
 import org.deckfour.xes.classification.XEventAttributeClassifier;
 import org.deckfour.xes.classification.XEventClassifier;
 import org.deckfour.xes.extension.XExtension;
@@ -23,15 +18,15 @@ import org.deckfour.xes.extension.std.XOrganizationalExtension;
 import org.deckfour.xes.extension.std.XTimeExtension;
 import org.deckfour.xes.factory.XFactory;
 import org.deckfour.xes.factory.XFactoryRegistry;
-import org.deckfour.xes.model.XAttribute;
-import org.deckfour.xes.model.XAttributeMap;
-import org.deckfour.xes.model.XEvent;
-import org.deckfour.xes.model.XLog;
-import org.deckfour.xes.model.XTrace;
+import org.deckfour.xes.model.*;
 import org.deckfour.xes.out.XesXmlGZIPSerializer;
 import org.deckfour.xes.out.XesXmlSerializer;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
 
@@ -109,16 +104,10 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 trace.getAttributes().put("cost:variant", factory
                         .createAttributeLiteral("cost:variant", costVariant.getId(), conceptExt));
 
-                /**
-                 * add <string key=”total cost” value=”<LCA score>”/>
-                 * */
-                Double sum = costVariant.getSum();
-                trace.getAttributes().put("total:cost", factory
-                        .createAttributeLiteral("total:cost", String.valueOf(sum), conceptExt));
-
                 List<ProcessNodeInfo> nodeInfoList = nodeInfos.get(processInstanceId);
                 Map<String, Object> nodeID2costDriversMap = (Map<String, Object>) simulationConfiguration.getExtensionAttributes().get("cost_driver_costDrivers");
                 List<String> CCD = new ArrayList<>();
+                AtomicReference<Double> totalCost = new AtomicReference<>(0.0);
 
                 for (ProcessNodeInfo info : nodeInfoList) {
 
@@ -145,10 +134,18 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                      **/
                     Map<String, Object> costVariantMap = new HashMap<>();
 
+                    /**
+                     * Reset totalCost to 0
+                     */
+                    totalCost.set(0.0);
+
+
                     if (nodeID2costDriversMap.get(info.getId()) != null) CCD = (List<String>) nodeID2costDriversMap.get(info.getId());
 
                     if (!CCD.isEmpty()) {
-                        CCD.forEach(i -> costVariantMap.put(i, findConcreteCaseByCost(model.getGlobalConfiguration(), i)));
+                        CCD.forEach(i -> costVariantMap.put(i, findConcreteCaseByCost(model.getGlobalConfiguration(), costVariant, i)));
+                        List<ConcreteCostDriver> ccd = new ArrayList(costVariantMap.values());
+                        ccd.forEach(i -> totalCost.updateAndGet(v -> v + i.getLCAScore()));
                         info.SetDataObjectField(costVariantMap);
 
                         Map<String, Object> dataObjects = info.getDataObjectField();
@@ -185,6 +182,13 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     XEvent event = factory.createEvent(attributeMap);
                     trace.add(event);
                 }
+
+                /**
+                 * add <string key=”total cost” value=”<LCA score>”/>
+                 * */
+                trace.getAttributes().put("total:cost", factory
+                        .createAttributeLiteral("total:cost", String.valueOf(totalCost), conceptExt));
+
                 log.add(trace);
             }
 
@@ -206,11 +210,16 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
         }
     }
 
-    private Object findConcreteCaseByCost(GlobalConfiguration globalConfiguration, String abstractCostDriver){
+    private Object findConcreteCaseByCost(GlobalConfiguration globalConfiguration, CostVariant costVariant, String abstractCostDriver){
+
+        double epsilon = 0.000001d;
 
         List<AbstractCostDriver> abstractCostDrivers = (List<AbstractCostDriver>) globalConfiguration.getExtensionAttributes().get("cost_driver_costDrivers");
-        for (AbstractCostDriver abs: abstractCostDrivers) {
-            if (abs.getId().equals(abstractCostDriver)) return abs;
+        Double cost = costVariant.getConcretisedACD().get(abstractCostDriver);
+        AbstractCostDriver costDriver = abstractCostDrivers.stream().filter(i -> i.getId().equals(abstractCostDriver)).findFirst().get();
+
+        for (ConcreteCostDriver ccd: costDriver.getChildren()) {
+            if (Math.abs(ccd.getLCAScore() - cost) < epsilon) return ccd;
         }
         throw new ScyllaRuntimeException("Can not find cost driver by its name");
     }

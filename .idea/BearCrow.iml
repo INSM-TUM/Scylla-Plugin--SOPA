@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library name="Maven: de.hpi.bpt:scylla:0.0.1-SNAPSHOT">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../cost_driver/scylla/scylla.jar!/" />
+          <root url="jar://$MODULE_DIR$/scylla/scylla.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

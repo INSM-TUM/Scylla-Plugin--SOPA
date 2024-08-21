@@ -32,4 +32,8 @@ public class AbstractCostDriver extends CostDriver {
     public void setDefualtTimeUnit(TimeUnit defualtTimeUnit) {
         this.defualtTimeUnit = defualtTimeUnit;
     }
+
+    public ConcreteCostDriver findCCDbyID(String CCDId) {
+        return getChildren().stream().filter(i -> i.getId().equals(CCDId)).findFirst().get();
+    }
 }

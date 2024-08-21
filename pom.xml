@@ -18,7 +18,7 @@
             <artifactId>scylla</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>/Users/chuuun/IdeaProjects/cost_driver/scylla/scylla.jar</systemPath>
+            <systemPath>/Users/chuuun/IdeaProjects/BearCrow/scylla/scylla.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
