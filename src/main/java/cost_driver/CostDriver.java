@@ -1,9 +1,10 @@
 package cost_driver;
 
-public abstract class costDriver  {
+public abstract class CostDriver {
     protected String id;
 
-    public costDriver(String id){
+
+    public CostDriver(String id){
         this.id = id;
     }
 

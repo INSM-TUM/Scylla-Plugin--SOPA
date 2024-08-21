@@ -1,26 +1,28 @@
 package cost_driver;
 
+import org.springframework.lang.NonNull;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AbstractCostDriver extends costDriver{
+public class AbstractCostDriver extends CostDriver {
 
     protected TimeUnit defualtTimeUnit;
-    protected List<costDriver> children;
+    @NonNull
+    protected List<ConcreteCostDriver> children;
 
-
-    public AbstractCostDriver(String id, List<costDriver> children, TimeUnit defaultTimeUnit) {
+    public AbstractCostDriver(String id, @NonNull List<ConcreteCostDriver> children, TimeUnit defaultTimeUnit) {
         super(id);
         this.children = children;
         this.defualtTimeUnit = defaultTimeUnit;
     }
 
-    public List<costDriver> getChildren() {
+    public List<ConcreteCostDriver> getChildren() {
         return this.children;
     }
 
-    public void addChild(costDriver concreteCostDriver) {
-        children.add(concreteCostDriver);
+    public void addChild(CostDriver concreteCostDriver) {
+        children.add((ConcreteCostDriver) concreteCostDriver);
     }
 
     public TimeUnit getDefualtTimeUnit() {

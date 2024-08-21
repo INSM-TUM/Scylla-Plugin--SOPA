@@ -26,7 +26,7 @@ public class CostDriverGCParserPlugin extends GlobalConfigurationParserPluggable
         Namespace bsimNamespace = sim.getNamespace();
         Element costDrivers = sim.getChildren("costDriver", bsimNamespace).get(0);
 
-        List<costDriver> abstractCostDrivers = new ArrayList<>();
+        List<CostDriver> abstractCostDrivers = new ArrayList<>();
         for (Element el: costDrivers.getChildren()) { //parse abstract cost drivers
             String id = el.getAttributeValue("id");
             TimeUnit timeUnit = TimeUnit.valueOf(el.getAttributeValue("defaultTimeUnit").toUpperCase());
