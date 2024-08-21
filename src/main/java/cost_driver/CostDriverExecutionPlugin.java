@@ -18,58 +18,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
-public class CostDriverExecutionPlugin { /*
-    List<AbstractCostDriver> abstractCostDrivers;
-    List<ConcreteCostDriver> concreteCostDrivers;
+public class CostDriverExecutionPlugin {
 
-    public CostDriverExecutionPlugin() {
-        this.abstractCostDrivers = new ArrayList<>();
-        this.concreteCostDrivers = new ArrayList<>();
+    public static void main(String[] args) {
+        CostVariant costVariant = new CostVariant("costVariant1", 0.5, new HashMap<>());
+        CostVariant costVariant2 = new CostVariant("costVariant2", 0.5, new HashMap<>());
+        List<CostVariant> costVariants = new ArrayList<>();
+        costVariants.add(costVariant);
+        costVariants.add(costVariant2);
+        CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(1, costVariants);
+        System.out.println(costVariantConfiguration.getCostVariantList().get(0).getFrequency());
     }
-
-    public static void execute() throws ParserConfigurationException, IOException, SAXException, ScyllaValidationException {
-
-        List<AbstractCostDriver> abstractCostDrivers = XMLParser.parseGC(XMLParser.xmlParser("hiring_process_global_1.xml"));
-        List<String> concreteCostDrivers = XMLParser.parseSC(XMLParser.xmlParser("hiring_process_sim.xml")).stream().distinct().toList();
-        List<AbstractCostDriver> tmp = new ArrayList<>();
-
-        for (var i : abstractCostDrivers) {
-            if (concreteCostDrivers.contains(i.getId())) {
-                tmp.add(i);
-
-//                System.out.println(i.getId());
-            }
-        }
-        //def 6
-        for (var i : tmp) {
-            double activityInstanceCost = 0;
-//            System.out.println(i.getId());
-            for (var j : i.getChildren()) {
-                activityInstanceCost += j.getLCAScore();
-            }
-            System.out.println(i.getId() + ": " + activityInstanceCost);
-        }
-
-        // Sorted by LCAScore -- Why do we need it like that?
-        var sorted = abstractCostDrivers.stream().sorted(Comparator.comparing(
-                abstractCostDriver -> abstractCostDriver
-                        .getChildren()
-                        .stream()
-                        .mapToDouble(concreteCostDriver -> concreteCostDriver.LCAScore)
-                        .sum()
-        ));
-        // Output the sorting
-        for (var i : sorted.toList()) {
-            System.out.println(i.getId());
-        }
-
-
-    }
-
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, ScyllaValidationException {
-        execute();
-    }
-    */
 }
 
 //Helper class

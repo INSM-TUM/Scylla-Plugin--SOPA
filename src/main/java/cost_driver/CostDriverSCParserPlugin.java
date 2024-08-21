@@ -26,33 +26,33 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
         Integer count = Integer.valueOf(costVariantConfig.getAttributeValue("count"));
 
         Map<String, Object> extensionAttributes = new HashMap<>();
-        List<CostVariant> costVariants = new ArrayList<>();
+        List<CostVariant> costVariantList = new ArrayList<>();
 
         Double frequencyCount = 0.0;
 
-        for (Element ele: costVariantConfig.getChildren()) {
-            String id = ele.getAttributeValue("id");
-            Double frequency = Double.valueOf(ele.getAttributeValue("frequency"));
+        for (Element variant: costVariantConfig.getChildren()) {
+            String id = variant.getAttributeValue("id");
+            Double frequency = Double.valueOf(variant.getAttributeValue("frequency"));
             frequencyCount += frequency;
 
             Map<String, Double> concretisedACD = new HashMap<>();
 
-            for (Element element: ele.getChildren()) {
-                String CID = element.getAttributeValue("id");
-                Double cost = Double.valueOf(element.getAttributeValue("cost"));
+            for (Element driver: variant.getChildren()) {
+                String CID = driver.getAttributeValue("id");
+                Double cost = Double.valueOf(driver.getAttributeValue("cost"));
 
                 concretisedACD.put(CID, cost);
             }
 
             CostVariant costVariant = new CostVariant(id, frequency, concretisedACD);
-            costVariants.add(costVariant);
+            costVariantList.add(costVariant);
         }
 
         if (frequencyCount != 1) {
             throw new ScyllaValidationException("The sum of all cost variants' frequency is not equal to 1");
         }
 
-        CostVariantConfig costVariantConfiguration = new CostVariantConfig(count, costVariants);
+        CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(count, costVariantList);
         extensionAttributes.put("CostVariant", costVariantConfiguration);
 
 
@@ -60,6 +60,7 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
          * Parse Concretised abstract cost drivers in tasks
          */
         Map<Integer, String> costDrivers = new HashMap<>();
+        // get all cost drivers
         List<Element> elements = sim.getChildren().stream().filter(c -> c.getChild("costDrivers", bsimNamespace) != null).toList();
 
         for (Element el : elements) {
