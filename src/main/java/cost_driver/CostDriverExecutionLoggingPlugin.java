@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
