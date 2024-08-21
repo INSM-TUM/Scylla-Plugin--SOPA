@@ -21,9 +21,21 @@ import org.deckfour.xes.factory.XFactoryRegistry;
 import org.deckfour.xes.model.*;
 import org.deckfour.xes.out.XesXmlGZIPSerializer;
 import org.deckfour.xes.out.XesXmlSerializer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -91,7 +103,25 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             //Preparation for adding <string key=”cost:variant” value=”standard procedure”/>
             SimulationConfiguration simulationConfiguration = desmojObjectsMap.get(processId).getSimulationConfiguration();
             CostVariantConfiguration costVariants = (CostVariantConfiguration) simulationConfiguration.getExtensionAttributes().get("cost_driver_CostVariant");
-            Stack<CostVariant> costVariantList = costVariants.getCostVariantListConfigured();
+            Stack<CostVariant> costVariantStack = costVariants.getCostVariantListConfigured();
+
+            //Preparation for Average Cost
+            Map<String, List<AtomicReference<Double>>> averageCostMap = new HashMap<>();
+
+            /**
+             * Preparation of writing to xml
+             * */
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder;
+            try {
+                docBuilder = docFactory.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("CostVariantAverageTime");
+            doc.appendChild(rootElement);
 
             for (Integer processInstanceId : nodeInfos.keySet()) {
                 XTrace trace = factory.createTrace();
@@ -100,7 +130,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 /**
                 * add <string key=”cost:variant” value=”standard procedure”/>
                 * */
-                CostVariant costVariant = costVariantList.pop();
+                CostVariant costVariant = costVariantStack.pop();
                 trace.getAttributes().put("cost:variant", factory
                         .createAttributeLiteral("cost:variant", costVariant.getId(), conceptExt));
 
@@ -189,13 +219,32 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 trace.getAttributes().put("total:cost", factory
                         .createAttributeLiteral("total:cost", String.valueOf(totalCost), conceptExt));
 
+                /**
+                 * add total cost of each instances to averageCostMap
+                 * */
+                if (!averageCostMap.containsKey(costVariant.getId())) {
+                    averageCostMap.put(costVariant.getId(), new ArrayList<>());
+                }
+                averageCostMap.get(costVariant.getId()).add(totalCost);
+
                 log.add(trace);
             }
 
             XesXmlSerializer serializer;
             FileOutputStream fos;
 
+            /**
+             * calculate average value of instances' total cost
+             * */
+            Map<String, Double> averageTotalCostMap = new HashMap<>();
+            for (String costVariant:averageCostMap.keySet()) {
+                averageTotalCostMap.put(costVariant, averageCostMap.get(costVariant).stream().mapToDouble(i -> i.get()).average().orElse(0.0));
+                //log.getAttributes().put(costVariant, factory.createAttributeLiteral(costVariant, String.valueOf(averageTotalCostMap.get(costVariant)), null));
 
+                Element cv = doc.createElement(costVariant.replace(' ', '_'));
+                cv.setTextContent(String.valueOf(averageTotalCostMap.get(costVariant)));
+                rootElement.appendChild(cv);
+            }
 
             if (gzipOn) {
                 serializer = new XesXmlGZIPSerializer();
@@ -207,6 +256,17 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             };
             serializer.serialize(log, fos);
             fos.close();
+
+
+            /***
+             * Write to "XML" output file
+             */
+            try (FileOutputStream output =
+                         new FileOutputStream(outputPathWithoutExtension + "sustainability_global_information_statistic.xml")) {
+                writeXml(doc, output);
+            } catch (IOException | TransformerException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -222,6 +282,18 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             if (Math.abs(ccd.getLCAScore() - cost) < epsilon) return ccd;
         }
         throw new ScyllaRuntimeException("Can not find cost driver by its name");
+    }
+
+    private static void writeXml(Document document, OutputStream output) throws TransformerException {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        DOMSource source = new DOMSource(document);
+        StreamResult result = new StreamResult(output);
+
+        transformer.transform(source, result);
     }
 }
 
