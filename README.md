@@ -71,7 +71,7 @@ The
 ### Simulation Configuration Parser Plugin
 Parses the simulation config file which describes the cost variant by ID, frequency of occurrence, and cost:
 ```ruby
-bsim:costVariantConfig>
+<bsim:costVariantConfig>
       <bsim:variant id="Shipment and delivery over distance A" frequency="0.2">
         <bsim:driver id="Delivery" cost="0.00002843"/>
       </bsim:variant>
