@@ -95,6 +95,34 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.deckfour</groupId>
+            <artifactId>openxes</artifactId>
+            <version>20160212</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/openxes-20160212.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.deckfour</groupId>
+            <artifactId>openxes-xstream</artifactId>
+            <version>20160212</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/openxes-xstream-20160212.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.deckfour</groupId>
+            <artifactId>ospex</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/spex.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>desmoj</groupId>
+            <artifactId>desmoj</artifactId>
+            <version>2.5.1e</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/desmoj-2.5.1e-bin.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
