@@ -34,7 +34,7 @@ jobs:
       run: mvn -B clean --file pom.xml
 
     - name: Installation of Scylla
-      run: mvn install
+      run: mvn install -X
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
