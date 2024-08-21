@@ -14,7 +14,7 @@ Cost Variant is a process instance with a different combination of activities, t
 A quantified score of environmental impacts associated with the life cycle of a commercial product.
 ## 🎯Objective
 ### 🛠️ How to run it?
-***Please remember to change the path in pom.xml to your own Absolute Path***
+***Please remember to change the path in pom.xml to your own Absolute Path of your scylla.jar file***
 1. Navigate to src/main/java/cost_driver/Main and run.
 2. Select the desired configuration files and "cost_driver" as plugin.
 <img width="1822" alt="Screenshot 2024-01-17 at 23 10 06" src="https://github.com/mhunter02/BearCrow-private/assets/85895529/83200e2f-5fce-4098-8c8e-0b2224d9d91e">
