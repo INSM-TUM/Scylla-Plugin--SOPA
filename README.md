@@ -13,8 +13,25 @@ Cost variants govern what specific combinations of concretizations can occur dur
 ### What is LCA Scores?
 A quantified score of environmental impacts associated with the life cycle of a commercial product.
 ## 🎯Objective
+**1. Please remember to put the latest scylla.jar & scylla-tests.jar files in the ./lib folder</br>
+2. Another way of managing the plugin is by replacing the current Scylla dependencies, with the following. Please ensure you are using the [latest](https://github.com/orgs/bptlab/packages?repo_name=scylla) Scylla package**
+```
+      <dependency>
+            <groupId>de.hpi.bpt</groupId>
+            <artifactId>scylla</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.hpi.bpt</groupId>
+            <artifactId>scylla</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+```
+
 ### 🛠️ How to run it?
-***Please remember to change the path in pom.xml to your own Absolute Path of your scylla.jar file***
 1. Navigate to src/main/java/cost_driver/Main and run.
 2. Select the desired configuration files and "cost_driver" as plugin.
 <img width="1822" alt="Screenshot 2024-01-17 at 23 10 06" src="https://github.com/mhunter02/BearCrow-private/assets/85895529/83200e2f-5fce-4098-8c8e-0b2224d9d91e">
