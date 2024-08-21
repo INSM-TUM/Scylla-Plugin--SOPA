@@ -7,9 +7,7 @@ on:
   release:
     types: [ created ]
   push:
-    branches-ignore:
-      - 'dependabot/**'
-    pull_request:
+    branches: [ main ]
 
 jobs:
   pat:
@@ -43,7 +41,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
