@@ -1,31 +1,23 @@
-import cost_driver.CostDriverSCParserPlugin;
+package cost_driver;
+
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
-import de.hpi.bpt.scylla.model.configuration.SimulationConfiguration;
 import org.jdom2.JDOMException;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-
-import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SCParser_Test extends SimulationTest{
+public class SCParserTest extends SimulationTest{
 
 
     public static void main(String[] args) {
         try {
-            new SCParser_Test().testSCIsParsed();
+            new SCParserTest().testSCIsParsed();
         } catch (Throwable e) {
             e.printStackTrace();
         }

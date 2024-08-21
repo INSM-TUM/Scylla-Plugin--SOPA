@@ -1,3 +1,5 @@
+package cost_driver;
+
 import java.io.IOException;
 
 import de.hpi.bpt.scylla.SimulationManager;
