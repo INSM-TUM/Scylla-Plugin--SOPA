@@ -54,13 +54,16 @@ public class CostDriverExecutionPlugin {
 
 
         var sorted = abstractCostDrivers.stream().sorted(Comparator.comparing(
-                abstractCostDriver1 -> abstractCostDriver1.getChildren().stream().mapToDouble(concreteCostDriver1 -> concreteCostDriver1.LCAScore).sum()
+                abstractCostDriver1 -> abstractCostDriver1
+                        .getChildren()
+                        .stream()
+                        .mapToDouble(concreteCostDriver1 -> concreteCostDriver1.LCAScore)
+                        .sum()
         ));
 
-        for (var i: sorted.toList()){
+        for (var i : sorted.toList()) {
             System.out.println(i.getId());
         }
-
 
 
     }
