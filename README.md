@@ -59,7 +59,7 @@ A demo video can be found [here](https://youtu.be/ag2_OvQh5vY).
 Three Plugins are cooperating to achieve this.
 
 ### Global Configuration Parser Plugin
-Parses the global config file which describes the abstract CDs and its children, concreteCDs with details that it consists of:
+Parses the global config file which describes the abstract CDs and their children, concreteCDs with details that it consists of:
 ```ruby
 <bsim:costDriver>
     <bsim:abstractCostDriver id="Delivery">
@@ -74,8 +74,8 @@ Parses the global config file which describes the abstract CDs and its children,
 Parses the simulation config file which describes the cost variant by ID, frequency of occurrence, and cost:
 ```ruby
 <bsim:costVariantConfig>
-      <bsim:variant id="Shipment and delivery over distance A" frequency="0.2">
-        <bsim:driver id="Delivery" cost="0.00002843"/>
+      <bsim:variant id="[Cost Variant ID]" frequency="[double]">
+        <bsim:driver id="[Abstract Cost Driver ID]" cost="[Cost]"/>
       </bsim:variant>
 ```
 ### Logger Plugin
@@ -94,7 +94,7 @@ The event log is composed of a sequence of activity instances. We put the activi
 		<string key="cost:driver" value=[Abstract Cost Driver(Concrete Cost Driver): [cost]]/>
 		<string key="cost:driver" value=[Abstract Cost Driver(Concrete Cost Driver): [cost]]/>
 		<string key="concept:name" value=[Activity]]/>
-		<string key="lifecycle:transition" value="start"/>
+		<string key="lifecycle:transition" value="[state]"/>
 		<date key="time:timestamp" value="2023-12-25T09:00:00+01:00"/>
 		<string key="cost:activity" value=[activity cost]/>
 	</event>
