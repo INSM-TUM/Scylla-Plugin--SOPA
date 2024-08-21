@@ -91,7 +91,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     XOrganizationalExtension.KEY_RESOURCE));
             classifiers.add(new XEventAttributeClassifier("Cost Driver", "cost:driver"));
             classifiers.add(new XEventAttributeClassifier("Cost Variant", "cost:variant"));
-            classifiers.add(new XEventAttributeClassifier("Total Cost", "total:cost"));
+            classifiers.add(new XEventAttributeClassifier("Process Instance Cost", "cost:Process_Instance"));
             log.getClassifiers().addAll(classifiers);
 
             log.getAttributes().put("source", factory.createAttributeLiteral("source", "Scylla", null));
@@ -257,8 +257,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 /**
                  * add <string key=”total cost” value=”<LCA score>”/>
                  * */
-                trace.getAttributes().put("total:cost", factory
-                        .createAttributeLiteral("total:cost", String.valueOf(totalCostPerInstance), conceptExt));
+                trace.getAttributes().put("cost:Process_Instance", factory
+                        .createAttributeLiteral("cost:Process_Instance", String.valueOf(totalCostPerInstance), conceptExt));
 
                 /**
                  * add total cost of each instances to instancesCostVariant2TotalCostMap
@@ -292,7 +292,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             }
 
             //Calculate all traces average cost and put them into xml
-            Element tcv = doc.createElement("All_Traces_Average_Cost");
+            Element tcv = doc.createElement("Average_Process_Instance_Cost");
             tcv.setTextContent(String.valueOf(instanceCosts.stream().mapToDouble(i -> i).average().orElse(0.0)));
             rootElement.appendChild(tcv);
 
@@ -301,14 +301,14 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
 
 
             //Create other element for not aggregated data
-            Element individualCostPerInstance = doc.createElement("Individual_Cost_Per_Instance");
+            Element individualCostPerInstance = doc.createElement("Activity_Instance_Cost");
 
             for (String act:averageCostEachActivityMap.keySet()) {
                 Element activity = doc.createElement(act.replace(' ', '_'));
 
 
                 //Create activity cost list
-                Element activityCost = doc.createElement(act.replace(' ', '_') + "_average_cost");
+                Element activityCost = doc.createElement(act.replace(' ', '_') + "_average_activity_cost");
                 List<Double> costInDifferentCostVariantEachActivity = new ArrayList<>();
 
                 //Create individual activity cost
@@ -330,7 +330,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     individualActivityCost.appendChild(individualCostWithDifferentCostVariant);
 
                     for (Double cost : averageCostEachActivityMap.get(act).get(scen)) {
-                        Element individualInstanceCost = doc.createElement("cost");
+                        Element individualInstanceCost = doc.createElement("activity_instance_cost");
                         individualInstanceCost.setTextContent(String.valueOf(cost));
                         individualCostWithDifferentCostVariant.appendChild(individualInstanceCost);
                     }
