@@ -131,7 +131,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             }
             // root elements
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("CostVariantAverageTime");
+            Element rootElement = doc.createElement("Sustainability_Info");
             doc.appendChild(rootElement);
 
             for (Integer processInstanceId : nodeInfos.keySet()) {

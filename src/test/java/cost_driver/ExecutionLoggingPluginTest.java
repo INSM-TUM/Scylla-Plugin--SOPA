@@ -69,7 +69,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
         List<ConcreteCostDriver> testConcreteCostDriver1 = new LinkedList<>();
         List<ConcreteCostDriver> testConcreteCostDriver2 = new LinkedList<>();
 
-        AbstractCostDriver ACD_1 = new AbstractCostDriver("test1",testConcreteCostDriver1, TimeUnit.HOURS);
+        AbstractCostDriver ACD_1 = new AbstractCostDriver("test1",testConcreteCostDriver1);
         ConcreteCostDriver CCD_1_1 = new ConcreteCostDriver("Delivery_B_Small_Lorry", ACD_1,0.00005524);
         ConcreteCostDriver CCD_1_2 = new ConcreteCostDriver("Delivery_A_Small_Lorry", ACD_1,0.00003683);
         ConcreteCostDriver CCD_1_3 = new ConcreteCostDriver("Delivery_A_Lorry", ACD_1,0.00002843);
@@ -78,7 +78,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
         ACD_1.addChild(CCD_1_2);
         ACD_1.addChild(CCD_1_3);
         ACD_1.addChild(CCD_1_4);
-        AbstractCostDriver ACD_2 = new AbstractCostDriver("test2",testConcreteCostDriver2, TimeUnit.HOURS);
+        AbstractCostDriver ACD_2 = new AbstractCostDriver("test2",testConcreteCostDriver2);
         ConcreteCostDriver CCD_2_1 = new ConcreteCostDriver("Delivery_B_Small_Lorry", ACD_2,0.00005524);
         ConcreteCostDriver CCD_2_2 = new ConcreteCostDriver("Delivery_A_Small_Lorry", ACD_2,0.00003683);
         ConcreteCostDriver CCD_2_3 = new ConcreteCostDriver("Delivery_A_Lorry", ACD_2,0.00007843);//

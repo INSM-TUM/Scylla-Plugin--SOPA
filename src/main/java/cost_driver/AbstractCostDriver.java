@@ -11,10 +11,9 @@ public class AbstractCostDriver extends CostDriver {
     @NonNull
     protected List<ConcreteCostDriver> children;
 
-    public AbstractCostDriver(String id, @NonNull List<ConcreteCostDriver> children, TimeUnit defaultTimeUnit) {
+    public AbstractCostDriver(String id, @NonNull List<ConcreteCostDriver> children) {
         super(id);
         this.children = children;
-        this.defualtTimeUnit = defaultTimeUnit;
     }
 
     public List<ConcreteCostDriver> getChildren() {

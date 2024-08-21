@@ -1,13 +1,15 @@
 package cost_driver;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
 import de.hpi.bpt.scylla.plugin_type.parser.GlobalConfigurationParserPluggable;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //This is an example Global Configuration Parser of "hiring_process_global"
 
@@ -27,9 +29,9 @@ public class CostDriverGCParserPlugin extends GlobalConfigurationParserPluggable
         List<CostDriver> abstractCostDrivers = new ArrayList<>();
         for (Element el: costDrivers.getChildren()) { //parse abstract cost drivers
             String id = el.getAttributeValue("id");
-            TimeUnit timeUnit = TimeUnit.valueOf(el.getAttributeValue("defaultTimeUnit").toUpperCase());
+            //TimeUnit timeUnit = TimeUnit.valueOf(el.getAttributeValue("defaultTimeUnit").toUpperCase());
 
-            AbstractCostDriver abstractCostDriver = new AbstractCostDriver(id, new ArrayList<>(), timeUnit);
+            AbstractCostDriver abstractCostDriver = new AbstractCostDriver(id, new ArrayList<>());
 
             for (Element child: el.getChildren()) { //parse concrete cost drivers
                 String chileId = child.getAttributeValue("id");
