@@ -55,7 +55,7 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
         CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(count, costVariantList, simulationInput.getRandomSeed());
         extensionAttributes.put("CostVariant", costVariantConfiguration);
 
-        /***
+        /**
          * Parse Concretised abstract cost drivers in tasks
          */
         Map<Integer, List<String>> costDrivers = new HashMap<>();
