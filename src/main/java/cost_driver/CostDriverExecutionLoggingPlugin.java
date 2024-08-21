@@ -105,8 +105,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             //Preparation for adding <string key=”cost:variant” value=”standard procedure”/>
             SimulationConfiguration simulationConfiguration = desmojObjectsMap.get(processId).getSimulationConfiguration();
             CostVariantConfiguration costVariants = (CostVariantConfiguration) simulationConfiguration.getExtensionAttributes().get("cost_driver_CostVariant");
-            Stack<CostVariant> costVariantStack = (Stack<CostVariant>) costVariants.getCostVariantListConfigured().clone();
-
+            Stack<CostVariant> costVariantStack = costVariants.getCostVariantListConfigured();
 
             /**
              * Preparation for Average Cost Calculation
@@ -153,8 +152,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 trace.getAttributes().put(XConceptExtension.KEY_NAME, factory
                         .createAttributeLiteral(XConceptExtension.KEY_NAME, processInstanceId.toString(), conceptExt));
                 /**
-                * add <string key=”cost:variant” value=”standard procedure”/>
-                * */
+                 * add <string key=”cost:variant” value=”standard procedure”/>
+                 * */
                 CostVariant costVariant = costVariantStack.pop();
                 trace.getAttributes().put("cost:variant", factory
                         .createAttributeLiteral("cost:variant", costVariant.getId(), conceptExt));
@@ -352,11 +351,11 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     individualCostWithDifferentCostVariant.appendChild(individualInstanceCost);
 
                     /**
-                    for (Double cost : averageCostEachActivityMap.get(act).get(scen)) {
-                        Element individualInstanceCost = doc.createElement("activity_instance_cost");
-                        individualInstanceCost.setTextContent(String.valueOf(cost));
-                        individualCostWithDifferentCostVariant.appendChild(individualInstanceCost);
-                    }
+                     for (Double cost : averageCostEachActivityMap.get(act).get(scen)) {
+                     Element individualInstanceCost = doc.createElement("activity_instance_cost");
+                     individualInstanceCost.setTextContent(String.valueOf(cost));
+                     individualCostWithDifferentCostVariant.appendChild(individualInstanceCost);
+                     }
                      **/
                 }
                 //Add activity average cost into log under "Activity_Average_Cost"
@@ -378,7 +377,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             else {
                 serializer = new XesXmlSerializer();
                 fos = new FileOutputStream(outputPathWithoutExtension + fileNameWithoutExtension + ".xes");
-            }
+            };
             serializer.serialize(log, fos);
             fos.close();
 
@@ -421,4 +420,3 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
         transformer.transform(source, result);
     }
 }
-
