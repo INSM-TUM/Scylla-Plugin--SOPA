@@ -88,6 +88,8 @@ jobs:
           mv ./*.jar ./cost_driver.jar
           zip -r ../cost_driver.zip ./*.jar ./libs/*
           cd ..
+          echo "RELEASE_VERSION=$(cat pom.xml | grep '<version>' | head -1 | sed 's/<version>//' | sed 's/<\/version>//')" >> $GITHUB_ENV
+
       - name: Upload Zip
         uses: ncipollo/release-action@v1.12.0
         with:
