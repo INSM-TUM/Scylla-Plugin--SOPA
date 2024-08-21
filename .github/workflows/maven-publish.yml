@@ -7,7 +7,9 @@ on:
   release:
     types: [ created ]
   push:
-    branches: [ main ]
+    branches-ignore:
+      - 'dependabot/**'
+    pull_request:
 
 jobs:
   pat:
