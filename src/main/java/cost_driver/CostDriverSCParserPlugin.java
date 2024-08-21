@@ -1,6 +1,7 @@
 package cost_driver;
 
 import java.util.*;
+
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.logger.DebugLogger;
 import de.hpi.bpt.scylla.model.configuration.SimulationConfiguration;
@@ -30,14 +31,14 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
 
         Double frequencyCount = 0.0;
 
-        for (Element variant: costVariantConfig.getChildren()) {
+        for (Element variant : costVariantConfig.getChildren()) {
             String id = variant.getAttributeValue("id");
             Double frequency = Double.valueOf(variant.getAttributeValue("frequency"));
             frequencyCount += frequency;
 
             Map<String, Double> concretisedACD = new HashMap<>();
 
-            for (Element driver: variant.getChildren()) {
+            for (Element driver : variant.getChildren()) {
                 String CID = driver.getAttributeValue("id");
                 Double cost = Double.valueOf(driver.getAttributeValue("cost"));
 
@@ -52,7 +53,12 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
             throw new ScyllaValidationException("The sum of all cost variants' frequency is not equal to 1");
         }
 
-        CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(count, costVariantList, simulationInput.getRandomSeed());
+
+        CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(
+                count,
+                costVariantList,
+                simulationInput.getRandomSeed()
+        );
         extensionAttributes.put("CostVariant", costVariantConfiguration);
 
         /**
@@ -78,7 +84,7 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
             }
 
             List<String> costDriver = new ArrayList<>();
-            for (Element element: el.getChild("costDrivers", bsimNamespace).getChildren()) {
+            for (Element element : el.getChild("costDrivers", bsimNamespace).getChildren()) {
                 if (element.getName().equals("costDriver")) costDriver.add(element.getAttributeValue("id"));
             }
             costDrivers.put(nodeId, costDriver);
