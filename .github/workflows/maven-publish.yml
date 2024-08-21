@@ -56,11 +56,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: maven
-      - name: maven-settings-xml-action
-        uses: whelk-io/maven-settings-xml-action@v14
-        with:
-          repositories: '[{ "id": "", "url": "" },{ "id": "", "url": "" }]'
-          servers:
 
       - name: Setup dependencies
         run: mvn -B clean --file pom.xml
