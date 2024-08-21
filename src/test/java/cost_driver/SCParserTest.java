@@ -1,20 +1,85 @@
 package cost_driver;
 
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
+import de.hpi.bpt.scylla.model.configuration.SimulationConfiguration;
 import org.jdom2.JDOMException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.jdom2.Element;
+
 import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SCParserTest extends SimulationTest{
 
+    /*
+    Unit testing
+     */
+    @Test
+    public void testParse() throws ScyllaValidationException {
+        // Mocking necessary objects
+        SimulationConfiguration simulationInput = Mockito.mock(SimulationConfiguration.class);
+        Element sim = Mockito.mock(Element.class);
+        Element costVariantConfig = Mockito.mock(Element.class);
+        Element variant = Mockito.mock(Element.class);
+        Element driver = Mockito.mock(Element.class);
 
+        // Setting up the mock objects
+        Mockito.when(sim.getChildren("costVariantConfig", Mockito.any())).thenReturn(List.of(costVariantConfig));
+        Mockito.when(sim.getChildren()).thenReturn(List.of(variant));
+        Mockito.when(costVariantConfig.getChildren()).thenReturn(List.of(variant));
+        Mockito.when(variant.getAttributeValue("id")).thenReturn("variantId");
+        Mockito.when(variant.getAttributeValue("frequency")).thenReturn("0.5");
+        Mockito.when(variant.getChildren()).thenReturn(List.of(driver));
+        Mockito.when(driver.getAttributeValue("id")).thenReturn("driverId");
+        Mockito.when(driver.getAttributeValue("cost")).thenReturn("10.0");
+        Mockito.when(sim.getAttributeValue("processInstances")).thenReturn("1");
+
+        // Creating an instance of the CostDriverSCParserPlugin
+        CostDriverSCParserPlugin parser = new CostDriverSCParserPlugin();
+
+        // Invoking the parse method
+        Map<String, Object> result = parser.parse(simulationInput, sim);
+
+        // Asserting the expected results
+        assertEquals(1, result.get("CostVariant"));
+        assertEquals(Map.of(1, List.of("driverId")), result.get("costDrivers"));
+    }
+
+    @Test
+    public void testParseWithInvalidFrequency() throws ScyllaValidationException {
+        // Similar setup as before, but this time, setting an invalid frequency
+        SimulationConfiguration simulationInput = Mockito.mock(SimulationConfiguration.class);
+        Element sim = Mockito.mock(Element.class);
+        Element costVariantConfig = Mockito.mock(Element.class);
+        Element variant = Mockito.mock(Element.class);
+
+        Mockito.when(sim.getChildren("costVariantConfig", Mockito.any())).thenReturn(List.of(costVariantConfig));
+        Mockito.when(sim.getAttributeValue("processInstances")).thenReturn("1");
+
+        // Setting up the mock objects with an invalid frequency (sum is not equal to 1)
+        Mockito.when(sim.getChildren()).thenReturn(List.of(variant, variant));
+        Mockito.when(variant.getAttributeValue("id")).thenReturn("variantId");
+        Mockito.when(variant.getAttributeValue("frequency")).thenReturn("0.5");
+
+        CostDriverSCParserPlugin parser = new CostDriverSCParserPlugin();
+        parser.parse(simulationInput, sim); // This should throw an exception
+    }
+
+
+
+
+
+    /*
+    Integration testing
+     */
     public static void main(String[] args) {
         try {
             new SCParserTest().testSCIsParsed();
