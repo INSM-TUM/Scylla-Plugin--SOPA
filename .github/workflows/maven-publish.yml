@@ -35,6 +35,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+
   Release:
     if: github.repository == 'INSM-TUM-Teaching/cost_driver'  # Only main repo has permissions to publish this
 
@@ -53,6 +54,25 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           cache: maven
+
+      - name: Download and Unpack Scylla
+        run: |
+          # Define variables for URLs and target directory
+          SCYLLA_URL="https://github.com/bptlab/scylla/releases/download/0.0.1-SNAPSHOT/scylla.zip"
+          TARGET_DIR="${{ github.workspace }}/lib"
+          
+          # Create the target directory if it doesn't exist
+          mkdir -p $TARGET_DIR
+          
+          # Download the zip file
+          wget $SCYLLA_URL -O scylla.zip
+          
+          # Unpack the zip file
+          unzip scylla.zip
+          
+          # Move the JAR files to the target directory
+          mv scylla*/scylla.jar $TARGET_DIR
+          mv scylla*/scylla-test.jar $TARGET_DIR
 
       - name: Setup dependencies
         run: mvn -B clean --file pom.xml
