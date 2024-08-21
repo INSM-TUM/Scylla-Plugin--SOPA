@@ -286,12 +286,20 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
 
             //Calculate all traces average cost per activities and put them into xml
             Element acitivityAverageCost = doc.createElement("Activity_Average_Cost");
+
+
+            //Create other element for not aggregated data
+            Element individualCostPerInstance = doc.createElement("Individual_Cost_Per_Instance");
+
             for (String act:averageCostEachActivityMap.keySet()) {
                 Element activity = doc.createElement(act.replace(' ', '_'));
 
-                //Create activity cost
+                //Create activity cost list
                 Element activityCost = doc.createElement(act.replace(' ', '_') + "_average_cost");
                 List<Double> costInDifferentCostVariantEachActivity = new ArrayList<>();
+
+                //Create individual activity cost
+                Element individualActivityCost = doc.createElement(act.replace(' ', '_'));
 
                 for (String scen: averageCostEachActivityMap.get(act).keySet()) {
                     Element scenario = doc.createElement(scen.replace(' ', '_'));
@@ -300,14 +308,25 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
 
                     //Add cost in different costVariant with different activity into a list
                     costInDifferentCostVariantEachActivity.addAll(averageCostEachActivityMap.get(act).get(scen));
+
+                    //
+                    Element individualCostWithDifferentCostVariant = doc.createElement(scen.replace(' ', '_'));
+                    individualActivityCost.appendChild(individualCostWithDifferentCostVariant);
+                    for (Double cost : averageCostEachActivityMap.get(act).get(scen)) {
+                        Element individualInstanceCost = doc.createElement("cost");
+                        individualInstanceCost.setTextContent(String.valueOf(cost));
+                        individualCostWithDifferentCostVariant.appendChild(individualInstanceCost);
+                    }
                 }
                 //Add activity average cost into log under "Activity_Average_Cost"
                 activityCost.setTextContent(String.valueOf(costInDifferentCostVariantEachActivity.stream().mapToDouble(i -> i).average().orElse(0.0)));
                 activity.appendChild(activityCost);
 
                 acitivityAverageCost.appendChild(activity);
+                individualCostPerInstance.appendChild(individualActivityCost);
             }
             rootElement.appendChild(acitivityAverageCost);
+            rootElement.appendChild(individualCostPerInstance);
 
 
             if (gzipOn) {
