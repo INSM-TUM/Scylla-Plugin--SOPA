@@ -16,9 +16,10 @@ A quantified score of environmental impacts associated with the life cycle of a 
 ### 🛠️ How to run it?
 ***Please remember to change the path in pom.xml to your own Absolute Path***
 1. Navigate to src/main/java/cost_driver/Main and run.
-2. Select the desired configuration files and click Start simulation.
-3. The logged data files will be found in a folder with format "output_<yy>_<mm>_<dd>...."
-ex., check the box + screen shot
+2. Select the desired configuration files and "cost_driver" as plugin.
+<img width="1822" alt="Screenshot 2024-01-17 at 23 10 06" src="https://github.com/mhunter02/BearCrow-private/assets/85895529/83200e2f-5fce-4098-8c8e-0b2224d9d91e">
+4. The logged data files will be found in a folder with format "output_<yy>_<mm>_<dd>...."
+
 
 
 ## 🧱 Components
