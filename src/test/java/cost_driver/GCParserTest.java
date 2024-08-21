@@ -4,16 +4,17 @@ import cost_driver.CostDriverGCParserPlugin;
 import cost_driver.SimulationTest;
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.configuration.SimulationConfiguration;
-import org.jdom2.JDOMException;
+import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
+import de.hpi.bpt.scylla.model.global.resource.Resource;
+import de.hpi.bpt.scylla.plugin_type.parser.EventOrderType;
+import org.jdom2.*;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Random;
+import java.time.ZoneId;
+import java.util.*;
 
-import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
 import org.junit.jupiter.api.Test;
 
 
@@ -23,78 +24,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class GCParserTest extends SimulationTest {
-    public static void main(String[] args) {
-        try {
-            new SCParserTest().testSCIsParsed();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
+import javax.naming.Name;
 
+class GCParserTest {
 
     @Test
-    public void testGCIsParsed() throws ScyllaValidationException, JDOMException, IOException {
-        createSimpleSimulationManager(
-                "logistics_global.xml",
-                "logistics_model_no_drivers.bpmn",
-                "logistics_sim.xml");
-        simulationManager._parseInput();
-        assertNotNull(getGlobalConfiguration());
+    void testParse() throws ScyllaValidationException {
+        CostDriverGCParserPlugin testSubject = new CostDriverGCParserPlugin();
+
+        // Create the objects for the testGlobalConfig
+        String testID = "logistics_global";
+        ZoneId testZoneId = ZoneId.systemDefault();
+        Long testNotRandomSeed = -5144667088361437244L;
+        Map<String, Resource> testResources = new HashMap<>();
+        List<EventOrderType> testEventOrderTypes = new LinkedList<>();
+        // Create a testGlobalConfig
+        GlobalConfiguration testGlobalConfig = new GlobalConfiguration(testID, testZoneId, testNotRandomSeed, testResources, testEventOrderTypes);
+
+        // Instead of new Element(), create it and parse it here
+        testSubject.parse(testGlobalConfig, new Element("globalConfiguration"));
+
+
     }
-    @Test
-    public void testGCProcessIDParsed() throws ScyllaValidationException, JDOMException, IOException {
-        createSimpleSimulationManager(
-                "logistics_global.xml",
-                "logistics_model_no_drivers.bpmn",
-                "logistics_sim.xml");
-        simulationManager._parseInput();
-        assertEquals("Process_0vv8a1n", getProcessId());
-    }
-
-
-
-    private Element processRoot() {
-        return processRoots.get("Process_1");
-    }
-
-    private Element properties() {
-        Namespace nsp = processRoot().getNamespace();
-        return processRoot()
-                .getChild("subProcess", nsp)
-                .getChild("extensionElements", nsp)
-                .getChildren().iterator().next();
-    }
-
-    private Element getProperty(String name) {
-        return properties().getChildren().stream().filter(each -> each.getAttributeValue("name").equals(name)).findAny().get();
-    }
-
-    private void setProperty(String name, Object value) {
-        getProperty(name).setAttribute("value", value.toString());
-    }
-
-    private Element prepareActivationRule() {
-        Element activationRuleRoot = getProperty("activationRule");
-        Element ruleElement = activationRuleRoot.getChildren().iterator().next();
-        ruleElement.getAttributes().clear();
-        return ruleElement;
-    }
-
-    private Element prepareGroupingCharacteristic() {
-        Element groupingCharacteristic = getProperty("groupingCharacteristic");
-        Element child = new Element("property", groupingCharacteristic.getNamespace());
-        groupingCharacteristic.addContent(child);
-        return child;
-    }
-
-    private void before(Runnable r) {
-        beforeParsingModels.computeIfAbsent("Process_1",s -> new ArrayList<>()).add(r);
-    }
-
-    @Override
-    protected String getFolderName() {
-        return null;
-    }
-
 }

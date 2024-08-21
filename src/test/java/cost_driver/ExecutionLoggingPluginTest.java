@@ -79,14 +79,14 @@ class ExecutionLoggingPluginTest extends SimulationTest {
         ACD_1.addChild(CCD_1_3);
         ACD_1.addChild(CCD_1_4);
         AbstractCostDriver ACD_2 = new AbstractCostDriver("test2",testConcreteCostDriver2, TimeUnit.HOURS);
-        ConcreteCostDriver CCD_2_1 = new ConcreteCostDriver("Delivery_B_Small_Lorry", ACD_1,0.00005524);
-        ConcreteCostDriver CCD_2_2 = new ConcreteCostDriver("Delivery_A_Small_Lorry", ACD_1,0.00003683);
-        ConcreteCostDriver CCD_2_3 = new ConcreteCostDriver("Delivery_A_Lorry", ACD_1,0.00007843);//
-        ConcreteCostDriver CCD_2_4 = new ConcreteCostDriver("Delivery_B_Lorry", ACD_1,0.00004265);
-        ACD_1.addChild(CCD_2_1);
-        ACD_1.addChild(CCD_2_2);
-        ACD_1.addChild(CCD_2_3);
-        ACD_1.addChild(CCD_2_4);
+        ConcreteCostDriver CCD_2_1 = new ConcreteCostDriver("Delivery_B_Small_Lorry", ACD_2,0.00005524);
+        ConcreteCostDriver CCD_2_2 = new ConcreteCostDriver("Delivery_A_Small_Lorry", ACD_2,0.00003683);
+        ConcreteCostDriver CCD_2_3 = new ConcreteCostDriver("Delivery_A_Lorry", ACD_2,0.00007843);//
+        ConcreteCostDriver CCD_2_4 = new ConcreteCostDriver("Delivery_B_Lorry", ACD_2,0.00004265);
+        ACD_2.addChild(CCD_2_1);
+        ACD_2.addChild(CCD_2_2);
+        ACD_2.addChild(CCD_2_3);
+        ACD_2.addChild(CCD_2_4);
 
         // Add ACDs in the list.
         testAbstractCostDrivers.add(ACD_1);
@@ -98,7 +98,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
         // Create CostVariant
         Map<String, Double> testConcretisedACD = new HashMap<>();
         // Valid LCAScore
-        testConcretisedACD.put("test1", 0.000002d);
+        testConcretisedACD.put("test1", 0.00002843);
         // Invalid LCAScore
         testConcretisedACD.put("test2", 0.00004d);
         CostVariant testCostVariant = new CostVariant("testID",0.0,testConcretisedACD);

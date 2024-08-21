@@ -23,7 +23,7 @@ public class SCParserTest extends SimulationTest{
     Unit testing
      */
     @Test
-    public void testParse() throws ScyllaValidationException {
+    void testParse() throws ScyllaValidationException {
         // Mocking necessary objects
         SimulationConfiguration simulationInput = Mockito.mock(SimulationConfiguration.class);
         Element sim = Mockito.mock(Element.class);
@@ -54,7 +54,7 @@ public class SCParserTest extends SimulationTest{
     }
 
     @Test
-    public void testParseWithInvalidFrequency() throws ScyllaValidationException {
+    void testParseWithInvalidFrequency() throws ScyllaValidationException {
         // Similar setup as before, but this time, setting an invalid frequency
         SimulationConfiguration simulationInput = Mockito.mock(SimulationConfiguration.class);
         Element sim = Mockito.mock(Element.class);
@@ -72,9 +72,6 @@ public class SCParserTest extends SimulationTest{
         CostDriverSCParserPlugin parser = new CostDriverSCParserPlugin();
         parser.parse(simulationInput, sim); // This should throw an exception
     }
-
-
-
 
 
     /*
