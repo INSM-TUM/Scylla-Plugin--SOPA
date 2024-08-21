@@ -50,7 +50,7 @@
       <bpmn:outgoing>Flow_033an5l</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1iyh4gc" sourceRef="Gateway_0ycinv6" targetRef="Gateway_17qcnbi" />
-    <bpmn:endEvent id="Event_1al9rcd" name="Product delivered sucessfully">
+    <bpmn:endEvent id="Event_1al9rcd" name="Product delivered successfully">
       <bpmn:incoming>Flow_13lfwjz</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_13lfwjz" name="no" sourceRef="Gateway_17qcnbi" targetRef="Event_1al9rcd" />

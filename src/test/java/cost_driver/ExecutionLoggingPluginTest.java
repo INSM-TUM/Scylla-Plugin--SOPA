@@ -1,10 +1,9 @@
 package cost_driver;
 
+import de.hpi.bpt.scylla.SimulationTest;
 import de.hpi.bpt.scylla.exception.ScyllaRuntimeException;
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
-import de.hpi.bpt.scylla.model.global.resource.Resource;
-import de.hpi.bpt.scylla.plugin_type.parser.EventOrderType;
 import org.jdom2.JDOMException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,14 +14,12 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.ZoneId;
 import java.util.*;
 
 import static cost_driver.Utils.*;
 import static de.hpi.bpt.scylla.Scylla.normalizePath;
-import static org.junit.jupiter.api.Assertions.*;
-
-import de.hpi.bpt.scylla.SimulationTest;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 class ExecutionLoggingPluginTest extends SimulationTest {
