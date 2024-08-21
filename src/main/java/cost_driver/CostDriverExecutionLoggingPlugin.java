@@ -283,6 +283,19 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             tcv.setTextContent(String.valueOf(instanceCosts.stream().mapToDouble(i -> i).average().orElse(0.0)));
             rootElement.appendChild(tcv);
 
+            //Calculate all traces average cost per activities and put them into xml
+            Element acitivityAverageCost = doc.createElement("Activity_Average_Cost");
+            for (String act:averageCostEachActivityMap.keySet()) {
+                Element activity = doc.createElement(act.replace(' ', '_'));
+                for (String scen: averageCostEachActivityMap.get(act).keySet()) {
+                    Element scenario = doc.createElement(scen.replace(' ', '_'));
+                    scenario.setTextContent(String.valueOf(averageCostEachActivityMap.get(act).get(scen).stream().mapToDouble(i -> i).average().orElse(0.0)));
+                    activity.appendChild(scenario);
+                }
+                acitivityAverageCost.appendChild(activity);
+            }
+            rootElement.appendChild(acitivityAverageCost);
+
 
             if (gzipOn) {
                 serializer = new XesXmlGZIPSerializer();
