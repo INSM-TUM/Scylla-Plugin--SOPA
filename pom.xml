@@ -228,10 +228,9 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
             <url>https://maven.pkg.github.com/bptlab/scylla</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
         </repository>
     </repositories>
 
