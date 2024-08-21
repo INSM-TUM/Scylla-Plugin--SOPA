@@ -71,8 +71,8 @@ jobs:
           unzip scylla.zip
           
           # Move the JAR files to the target directory
-          mv scylla*/scylla.jar $TARGET_DIR
-          mv scylla*/scylla-test.jar $TARGET_DIR
+          mv scylla.jar $TARGET_DIR
+          mv scylla-test.jar $TARGET_DIR
 
       - name: Setup dependencies
         run: mvn -B clean --file pom.xml
