@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  Release:
     if: github.repository == 'INSM-TUM-Teaching/cost_driver'  # Only main repo has permissions to publish this
 
     runs-on: ubuntu-latest
@@ -27,6 +27,10 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
+        cache: maven
+
+    - name: Setup dependencies
+      run: mvn -B clean --file pom.xml
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
