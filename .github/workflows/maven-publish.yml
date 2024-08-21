@@ -35,7 +35,6 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-
   Release:
     if: github.repository == 'INSM-TUM-Teaching/cost_driver'  # Only main repo has permissions to publish this
 
