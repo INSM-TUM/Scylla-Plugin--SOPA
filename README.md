@@ -6,14 +6,14 @@ The plugin works by extending Scylla, a business process simulator, by processin
 of a business process, passing it through the Scylla simulation, and outputs data insights.
 ### Why is sustainability information important?
 Provides insights into the environmental impact of business processes/activities.
-### What is Cost Driver?
-Cost Driver is the term used to describe the cost of an activity.
+### What is Cost Driver(CD)?
+Cost Driver is the term used to describe the cost of an activity. Here we abbreviate them into CD. Abstract cost driver (ACD) is a category consuming resource and causes environmental impact. Concrete cost driver (CCD) is the concreteized case of ACD. Take Delivery packages in our life, delivery can be considered as an ACD while delivery by a lorry or bicycle can be its CCD.
 ### What is the Cost Variant?
-Cost variants govern what specific combinations of concretizations can occur during individual process instances based on the environmental cost driver hierarchy — in other words, what sets of concrete environmental cost drivers can, during process execution, take the place of the abstract environmental cost drivers during activity execution.
+Cost variants govern what specific combinations of concretizations can occur during individual process instances based on the environmental cost driver hierarchy. In other words, what sets of concrete environmental cost drivers can, during process execution, take the place of the abstract environmental cost drivers during activity execution?
 ### What are LCA Scores?
 A quantified score of environmental impacts associated with the life cycle of a commercial product.
 ## 🎯Objective
-Whilst the concern for the world’s ecosystem seems to grow, industries need to measure how much their business processes have an impact on the environment. Thus, considering the environmental impacts of business processes has become an important factor that needs to be considered.
+Whilst the concern for the world’s ecosystem seems to grow, industries need to measure how much their business processes impact the environment. Thus, considering the environmental impacts of business processes has become an important factor that needs to be considered.
 Business process model and notation (BPMN) has been introduced to organizations to allow them to construct models of their business processes. Within this business process exist activities that contain further information about the activity itself.
 Scylla is a BPMN simulator being used in the case, the plugin is an extension of Scylla by dealing with the additional sustainability info.
 
@@ -59,14 +59,16 @@ A demo video can be found [here](https://youtu.be/ag2_OvQh5vY).
 Three Plugins are cooperating to achieve this.
 
 ### Global Configuration Parser Plugin
-Parses the global config file which describes the abstract CDs and the concreteCDs that it consists of:
-The
+Parses the global config file which describes the abstract CDs and its children, concreteCDs with details that it consists of:
 ```ruby
 <bsim:costDriver>
-    <bsim:abstractCostDriver id="Delivery" defaultTimeUnit="HOURS">
+    <bsim:abstractCostDriver id="Delivery">
       <bsim:concreteCostDeiver id="Delivery_B_Small_Lorry" cost="0.00005524"/>
       <bsim:concreteCostDeiver id="Delivery_B_Lorry" cost="0.00004265"/>
+	...
     </bsim:abstractCostDriver>
+	...
+
 ```
 ### Simulation Configuration Parser Plugin
 Parses the simulation config file which describes the cost variant by ID, frequency of occurrence, and cost:
