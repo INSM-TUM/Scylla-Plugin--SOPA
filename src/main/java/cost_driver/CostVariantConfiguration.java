@@ -1,5 +1,7 @@
 package cost_driver;
 
+import de.hpi.bpt.scylla.exception.ScyllaValidationException;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -22,9 +24,13 @@ public class CostVariantConfiguration {
      * @param count: number of simulation runs
      * @param costVariantList: list of parsed cost variants from the simulation configuration
      */
-    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList, Long seed) {
+    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList, Long seed) throws ScyllaValidationException {
         this.count = count;
         this.costVariantList = costVariantList;
+
+        if (costVariantList == null || costVariantList.isEmpty()) {
+            throw new ScyllaValidationException("Cost Variant list is empty. Cannot configure without any cost variants.");
+        }
 
         this.costVariantListConfigured = new Stack<>();
         this.costVariantList.forEach(costVariant ->
