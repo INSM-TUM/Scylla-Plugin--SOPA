@@ -42,7 +42,7 @@
       <bsim:concreteCostDriver id="paper" LCAScores="0.0000219">
         <bsim:probability>0.6</bsim:probability>
       </bsim:concreteCostDriver>
-      <bsim:concreteCostDriver id="digital" LCAScores="0.00001.95">
+      <bsim:concreteCostDriver id="digital" LCAScores="0.0000195">
         <bsim:probability>0.4</bsim:probability>
       </bsim:concreteCostDriver>
     </bsim:abstractCostDriver>
@@ -53,8 +53,8 @@
             <bsim:mean>6</bsim:mean>
           </bsim:exponentialDistribution>
         </bsim:duration>
-      </bsim:concreteCostDriver>
-      <bsim:probability>0.9</bsim:probability>
+        <bsim:probability>0.9</bsim:probability>
+      </bsim:concreteCostDriver>hhh
       <bsim:concreteCostDriver id="computer_lessStrict" LCAScores="0.0000293">
         <bsim:duration timeunit="HOURS">
           <bsim:exponentialDistribution>
