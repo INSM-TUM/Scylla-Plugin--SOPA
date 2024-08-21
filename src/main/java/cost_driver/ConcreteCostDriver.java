@@ -1,6 +1,7 @@
 package cost_driver;
 
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
+import de.hpi.bpt.scylla.model.configuration.distribution.TimeDistributionWrapper;
 
 import javax.xml.datatype.Duration;
 
@@ -8,9 +9,9 @@ public class ConcreteCostDriver extends costDriver{
     protected costDriver parent;
     protected Double probability;
     protected Double LCAScore;
-    protected Duration duration;
+    protected TimeDistributionWrapper duration;
 
-    public ConcreteCostDriver(String id, costDriver parent, Double probability, Double LCAScore, Duration duration) throws ScyllaValidationException {
+    public ConcreteCostDriver(String id, costDriver parent, Double probability, Double LCAScore, TimeDistributionWrapper duration) throws ScyllaValidationException {
         super(id);
         if (parent instanceof AbstractCostDriver) {
             this.parent = parent;
@@ -29,7 +30,7 @@ public class ConcreteCostDriver extends costDriver{
         return LCAScore;
     }
 
-    public Duration getDuration() {
+    public TimeDistributionWrapper getDuration() {
         return duration;
     }
 

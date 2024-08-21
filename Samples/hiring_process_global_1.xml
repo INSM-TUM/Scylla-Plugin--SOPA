@@ -48,7 +48,7 @@
     </bsim:abstractCostDriver>
     <bsim:abstractCostDriver id="Sifting" defaultTimeUnit="Hours">
       <bsim:concreteCostDriver id="computer" LCAScores="0.0000585">
-        <bsim:duration timeunit="HOURS">
+        <bsim:duration timeUnit="HOURS">
           <bsim:exponentialDistribution>
             <bsim:mean>6</bsim:mean>
           </bsim:exponentialDistribution>
@@ -56,7 +56,7 @@
         <bsim:probability>0.9</bsim:probability>
       </bsim:concreteCostDriver>hhh
       <bsim:concreteCostDriver id="computer_lessStrict" LCAScores="0.0000293">
-        <bsim:duration timeunit="HOURS">
+        <bsim:duration timeUnit="HOURS">
           <bsim:exponentialDistribution>
             <bsim:mean>3</bsim:mean>
           </bsim:exponentialDistribution>
