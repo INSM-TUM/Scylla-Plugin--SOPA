@@ -4,57 +4,58 @@ import de.hpi.bpt.scylla.exception.ScyllaValidationException;
 import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
 import de.hpi.bpt.scylla.model.global.resource.Resource;
 import de.hpi.bpt.scylla.plugin_type.parser.EventOrderType;
+import de.hpi.bpt.scylla.plugin_type.parser.GlobalConfigurationParserPluggable;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static cost_driver.TestUtils.GLOBAL_CONFIGURATION;
+import static cost_driver.Utils.GLOBAL_CONFIGURATION;
 import static de.hpi.bpt.scylla.Scylla.normalizePath;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GCParserTest {
 
     @Test
-    void testParse() throws ScyllaValidationException, IOException, JDOMException {
-        CostDriverGCParserPlugin testSubject = new CostDriverGCParserPlugin();
+    @DisplayName("Integration test")
+    void testParse_Integration() throws IOException, ScyllaValidationException, JDOMException {
+        Scripts.runMoockModels();
 
-        // Create the objects for the testGlobalConfig
-        String testID = "logistics_global";
-        ZoneId testZoneId = ZoneId.systemDefault();
-        Long testNotRandomSeed = -5144667088361437244L;
-        Map<String, Resource> testResources = new HashMap<>();
-        List<EventOrderType> testEventOrderTypes = new LinkedList<>();
-        // Create a testGlobalConfig
-        GlobalConfiguration testGlobalConfig = new GlobalConfiguration(testID, testZoneId, testNotRandomSeed, testResources, testEventOrderTypes);
+        // Integrate the Global Configuration
+        GlobalConfiguration actualGlobalConfig = Scripts.manager.getGlobalConfiguration();
 
-        // Preparing the parse()
-        SAXBuilder builder = new SAXBuilder();
-        Document gcDoc = builder.build(normalizePath("src/test/resources/Shipping/" + GLOBAL_CONFIGURATION));
-        Element gcRootElement = gcDoc.getRootElement();
+        // Integrate the ACDs
+        Object obj = actualGlobalConfig.getExtensionAttributes().get("cost_driver_costDrivers");
 
-        // Actual GlobalConfiguration Cost Drivers
-        var actualGC = testSubject.parse(testGlobalConfig, gcRootElement);
+        if (obj instanceof ArrayList<?> list) {
+            if (list.stream().allMatch(element -> element instanceof AbstractCostDriver)) {
+                List<AbstractCostDriver> abstractCostDriverList = (ArrayList<AbstractCostDriver>) list;
+                var expected = initialiseDriver();
+                for (int i = 0; i < abstractCostDriverList.size(); i++) {
+                    if (!abstractCostDriverList.get(i).equals(expected.get(i))) {
+                        fail("\nWrongly parsed ACD: " +
+                                "\nActual: " + abstractCostDriverList.get(i).toString() +
+                                "\nExpected: " + expected.get(i).toString()
 
-        // Expected
-        var expectedGC = initialiseDriver();
-        var expectedGCParents = expectedGC.stream().map(CostDriver::getId).toList();
-        for (AbstractCostDriver acd : (List<AbstractCostDriver>) actualGC.get("costDrivers")) {
-            // Compare the Parent
-            if (!expectedGCParents.contains(acd.getId())) {
-                fail("Missed parsing of ACD: " + acd.getId() + "(" + acd + ")"
-                        + "\nExpected ACDs: " + expectedGCParents);
-                // TODO: Compare the Children
+                        );
+                    }
+                }
+            } else {
+                throw new InvalidClassException("Not all elements in the list are of type AbstractCostDriver.");
             }
+        } else {
+            throw new ClassCastException("The object is not a ArrayList. Cannot cast to ArrayList<AbstractCostDriver>." +
+                    "The Object is: " + obj.getClass());
         }
+
     }
 
     private List<AbstractCostDriver> initialiseDriver() throws ScyllaValidationException {
@@ -84,8 +85,8 @@ class GCParserTest {
         ACD_3.addChild(CCD_3_1);
         ACD_3.addChild(CCD_3_2);
         AbstractCostDriver ACD_4 = new AbstractCostDriver("Re-Routing", testConcreteCostDriver4);
-        ConcreteCostDriver CCD_4_1 = new ConcreteCostDriver("Routing_A_Lorry", ACD_3, 0.000008529);
-        ConcreteCostDriver CCD_4_2 = new ConcreteCostDriver("Routing_A_Small_Lorry", ACD_4, 0.00001105);
+        ConcreteCostDriver CCD_4_1 = new ConcreteCostDriver("Re-Routing_A_Lorry", ACD_4, 0.000008529);
+        ConcreteCostDriver CCD_4_2 = new ConcreteCostDriver("Re-Routing_A_Small_Lorry", ACD_4, 0.00001105);
         ACD_4.addChild(CCD_4_1);
         ACD_4.addChild(CCD_4_2);
         AbstractCostDriver ACD_5 = new AbstractCostDriver("Receipt", testConcreteCostDriver5);

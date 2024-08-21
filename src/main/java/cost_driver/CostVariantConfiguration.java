@@ -22,7 +22,7 @@ public class CostVariantConfiguration {
      * @param count: number of simulation runs
      * @param costVariantList: list of parsed cost variants from the simulation configuration
      */
-    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList) {
+    public CostVariantConfiguration(Integer count, List<CostVariant> costVariantList, Random random) {
         this.count = count;
         this.costVariantList = costVariantList;
 

@@ -29,4 +29,35 @@ public class ConcreteCostDriver extends CostDriver {
     public void setParent(CostDriver parent) {
         this.parent = parent;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        // If the object is compared with itself then return true
+        if (obj == this) return true;
+
+        /* Check if obj is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(obj instanceof ConcreteCostDriver concreteCostDriver)) return false;
+
+        // TODO
+        //It is a weak check <- to be Extended
+        boolean isParentEqual = parent.id.compareTo(concreteCostDriver.parent.id) == 0;
+
+        if (id.compareTo(concreteCostDriver.id) == 0 &&
+                isParentEqual &&
+                Double.compare(LCAScore, concreteCostDriver.LCAScore) == 0) {
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public String toString() {
+        return "\nConcreteCostDriver{" +
+                "id='" + id + '\'' +
+                ", parentID=" + (parent != null ? parent.id : "null") +
+                ", LCAScore=" + LCAScore +
+                '}';
+    }
 }

@@ -52,7 +52,7 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
             throw new ScyllaValidationException("The sum of all cost variants' frequency is not equal to 1");
         }
 
-        CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(count, costVariantList);
+        CostVariantConfiguration costVariantConfiguration = new CostVariantConfiguration(count, costVariantList, new Random(simulationInput.getRandomSeed()));
         extensionAttributes.put("CostVariant", costVariantConfiguration);
 
 
