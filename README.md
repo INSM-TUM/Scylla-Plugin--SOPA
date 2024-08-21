@@ -17,7 +17,7 @@ Whilst the concern for the world’s ecosystem seems to grow, industries need to
 Business process model and notation (BPMN) has been introduced to organizations to allow them to construct models of their business processes. Within this business process exist activities that contain further information about the activity itself.
 Scylla is a BPMN simulator being used in the case, the plugin is an extension of Scylla by dealing with the additional sustainability info.
 
-More information can be found in our [report]().
+More information can be found in our [report](https://github.com/INSM-TUM-Teaching/cost_driver/blob/main/Final_Report_scylla_sustainability.pdf).
 ### 🛠️ How to run it?
 ### [For Developers]
 1. git clone our repository
@@ -56,10 +56,10 @@ More information can be found in our [report]().
 A demo video can be found [here](https://youtu.be/ag2_OvQh5vY).
 
 ## 🧱 Components
-There are three Plugins cooperating to achieve this.
+Three Plugins are cooperating to achieve this.
 
 ### Global Configuration Parser Plugin
-Parses the global config file which describes the abstractCDs and the concreteCDs that it consists of:
+Parses the global config file which describes the abstract CDs and the concreteCDs that it consists of:
 The
 ```ruby
 <bsim:costDriver>
