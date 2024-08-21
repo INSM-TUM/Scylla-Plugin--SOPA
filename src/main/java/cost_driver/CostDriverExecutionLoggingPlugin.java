@@ -288,11 +288,23 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             Element acitivityAverageCost = doc.createElement("Activity_Average_Cost");
             for (String act:averageCostEachActivityMap.keySet()) {
                 Element activity = doc.createElement(act.replace(' ', '_'));
+
+                //Create activity cost
+                Element activityCost = doc.createElement(act.replace(' ', '_') + "_average_cost");
+                List<Double> costInDifferentCostVariantEachActivity = new ArrayList<>();
+
                 for (String scen: averageCostEachActivityMap.get(act).keySet()) {
                     Element scenario = doc.createElement(scen.replace(' ', '_'));
                     scenario.setTextContent(String.valueOf(averageCostEachActivityMap.get(act).get(scen).stream().mapToDouble(i -> i).average().orElse(0.0)));
                     activity.appendChild(scenario);
+
+                    //Add cost in different costVariant with different activity into a list
+                    costInDifferentCostVariantEachActivity.addAll(averageCostEachActivityMap.get(act).get(scen));
                 }
+                //Add activity average cost into log under "Activity_Average_Cost"
+                activityCost.setTextContent(String.valueOf(costInDifferentCostVariantEachActivity.stream().mapToDouble(i -> i).average().orElse(0.0)));
+                activity.appendChild(activityCost);
+
                 acitivityAverageCost.appendChild(activity);
             }
             rootElement.appendChild(acitivityAverageCost);
