@@ -26,26 +26,26 @@ There are three Plugins cooperating to achieve this.
 
 ### Global Configuration Parser Plugin
 Parses the global config file of format as such:
-'''ruby
+```ruby
 <bsim:costDriver>
     <bsim:abstractCostDriver id="Delivery" defaultTimeUnit="HOURS">
       <bsim:concreteCostDeiver id="Delivery_B_Small_Lorry" cost="0.00005524"/>
       <bsim:concreteCostDeiver id="Delivery_B_Lorry" cost="0.00004265"/>
     </bsim:abstractCostDriver>
-'''
+```
 ### Simulation Configuration Parser Plugin
 Parses the simulation config file of format as such:
-'''ruby
+```ruby
 bsim:costVariantConfig>
       <bsim:variant id="Shipment and delivery over distance A" frequency="0.2">
         <bsim:driver id="Delivery" cost="0.00002843"/>
       </bsim:variant>
-'''
+```
 ### Logger Plugin
 Logs the extended simulation data in the form of an XES and XML file.  
 
 ## Results
-'''ruby
+```ruby
 <CostVariantAverageTime>
     <Shipment_and_delivery_over_distance_B>1.3410227142857142E-4</Shipment_and_delivery_over_distance_B>
     <Shipment_and_delivery_over_distance_A>1.7377499999999998E-4</Shipment_and_delivery_over_distance_A>
@@ -67,4 +67,4 @@ Logs the extended simulation data in the form of an XES and XML file.
             <Shipment_and_delivery_over_distance_A>2.843E-5</Shipment_and_delivery_over_distance_A>
             <Shipment_and_delivery_over_distance_A_Electric>2.843E-5</Shipment_and_delivery_over_distance_A_Electric>
         </Deliver_to_Door>
-'''
+```
