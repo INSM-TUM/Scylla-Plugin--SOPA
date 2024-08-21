@@ -116,7 +116,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
              * Preparation for average cost for each activity
              * task name -> scenario -> costs
              * */
-            Map<String, Map<String, List<AtomicReference<Double>>>> averageCostEachActivityMap = new HashMap<>();
+            Map<String, Map<String, List<Double>>> averageCostEachActivityMap = new HashMap<>();
 
             /**
              * Preparation of writing to xml
@@ -174,22 +174,27 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                      **/
                     Map<String, Object> concreteCostId2ObjectMap = new HashMap<>();
 
-                    /**
-                     * Reset totalCostPerInstance to 0
-                     */
-                    totalCostPerInstance.set(0.0);
+                    //Preparation for taskCost
+                    Double taskCost = 0.0;
 
-                    if (nodeID2costDriversMap.get(info.getId()) != null) listOfCCDID = (List<String>) nodeID2costDriversMap.get(info.getId());
+                    if (nodeID2costDriversMap.get(info.getId()) != null) {
+                        listOfCCDID = (List<String>) nodeID2costDriversMap.get(info.getId());
+                    } else {
+                        listOfCCDID.clear();
+                    }
 
                     if (!listOfCCDID.isEmpty()) {
                         listOfCCDID.forEach(i -> concreteCostId2ObjectMap.put(i, findConcreteCaseByCost(model.getGlobalConfiguration(), costVariant, i)));
 
-                        info.SetDataObjectField(concreteCostId2ObjectMap);
+                        info.SetDataObjectField(concreteCostId2ObjectMap); //nodeInfoList.stream().filter(i -> i.getId().equals(info.getId())).findFirst().get().SetDataObjectField(concreteCostId2ObjectMap);
 
                         Map<String, Object> dataObjects = info.getDataObjectField();
                         for (String d0: dataObjects.keySet()) {
                             attributeMap.put(d0, factory.createAttributeLiteral("cost:driver", d0,
                                     organizationalExt));
+
+                            ConcreteCostDriver ccd = (ConcreteCostDriver) dataObjects.get(d0);
+                            taskCost += ccd.getLCAScore();
                         }
                     }
 
@@ -207,6 +212,16 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                         //Only add the task's cost to total cost until it completed
                         List<ConcreteCostDriver> listOfCCD = new ArrayList(concreteCostId2ObjectMap.values());
                         listOfCCD.forEach(i -> totalCostPerInstance.updateAndGet(v -> v + i.getLCAScore()));
+
+                        //Only add the task's cost to averageCostEachActivityMap until it completed
+                        if (!averageCostEachActivityMap.containsKey(taskName)) {
+                            averageCostEachActivityMap.put(taskName, new HashMap<>());
+                        }
+                        if (!averageCostEachActivityMap.get(taskName).containsKey(costVariant.getId())) {
+                            averageCostEachActivityMap.get(taskName).put(costVariant.getId(), new ArrayList<>());
+                        }
+                        averageCostEachActivityMap.get(taskName).get(costVariant.getId()).add(taskCost);
+
                     }
                     else if (transition == ProcessNodeTransitionType.CANCEL) {
                         attributeMap.put(XLifecycleExtension.KEY_TRANSITION, factory
