@@ -1,21 +1,21 @@
 # BearCrow
-Simulate models with sustainability info, process and visualize the simulation results.
+Simulate models with sustainability info, and process and visualize the simulation results.
 
 ## ℹ️ About
 The plugin works by extending Scylla, a business process simulator, by processing sustainability information
-of a business process, passing it through the Scylla simulation and outputs data insights.
-### Why sustainability information important?
-Provides insights to the environmental impact of business processes/activities.
+of a business process, passing it through the Scylla simulation, and outputs data insights.
+### Why is sustainability information important?
+Provides insights into the environmental impact of business processes/activities.
 ### What is Cost Driver?
 Cost Driver is the term used to describe the cost of an activity.
-### What is Cost Variant?
+### What is the Cost Variant?
 Cost variants govern what specific combinations of concretizations can occur during individual process instances based on the environmental cost driver hierarchy — in other words, what sets of concrete environmental cost drivers can, during process execution, take the place of the abstract environmental cost drivers during activity execution.
-### What is LCA Scores?
+### What are LCA Scores?
 A quantified score of environmental impacts associated with the life cycle of a commercial product.
 ## 🎯Objective
 Whilst the concern for the world’s ecosystem seems to grow, industries need to measure how much their business processes have an impact on the environment. Thus, considering the environmental impacts of business processes has become an important factor that needs to be considered.
 Business process model and notation (BPMN) has been introduced to organizations to allow them to construct models of their business processes. Within this business process exist activities that contain further information about the activity itself.
-Scylla is a BPMN simulator being used in the case, the plugin is an extension of Scylla by dealing with those additional sustainability infos.
+Scylla is a BPMN simulator being used in the case, the plugin is an extension of Scylla by dealing with the additional sustainability info.
 
 More information can be found in our [report]().
 ### 🛠️ How to run it?
@@ -23,9 +23,9 @@ More information can be found in our [report]().
 1. git clone our repository
 2. [Download](https://github.com/bptlab/scylla/releases) and add Scylla.jar and scylla-tests.jar into libs
 3. Navigate to src/main/java/cost_driver/Main and run.
-4. Select the desired configuration files in samples UI and check "cost_driver" as plugin.
+4. Select the desired configuration files in the samples UI and check "cost_driver" as a plugin.
 <img width="1822" alt="Screenshot 2024-01-17 at 23 10 06" src="https://github.com/mhunter02/BearCrow-private/assets/85895529/83200e2f-5fce-4098-8c8e-0b2224d9d91e">
-5. The logged data files will be found in a folder with format: "output_yy_mm_dd...."
+5. The logged data files will be found in a folder with the format: "output_yy_mm_dd...."
 
 #### NOTE
 *1. Please remember to put the latest scylla.jar & scylla-tests.jar files in the ./lib folder</br>
@@ -50,16 +50,16 @@ More information can be found in our [report]().
 1. Download the latest version of [scylla.zip](https://github.com/bptlab/scylla/releases)
 2. Download our plugin package [cost_driver.zip](https://github.com/INSM-TUM-Teaching/cost_driver/releases/tag/0.0.1-SNAPSHOT)
 3. Unzip them
-4. Create a directory "samples" under scylla and put desire samples in
+4. Create a directory "samples" under Scylla and put desired samples in
 5. Double click scylla.jar and obtain the UI as step 4 above
 
-A demo video can be found [here](https://1drv.ms/v/s!Ah3W4gQ7fV9RheVw8KaAvgLETjPC5w?e=LnzQC8).
+A demo video can be found [here](https://youtu.be/ag2_OvQh5vY).
 
 ## 🧱 Components
 There are three Plugins cooperating to achieve this.
 
 ### Global Configuration Parser Plugin
-Parses the global config file of which describes the abstractCDs and the concreteCDs that it consists of:
+Parses the global config file which describes the abstractCDs and the concreteCDs that it consists of:
 The
 ```ruby
 <bsim:costDriver>
@@ -69,7 +69,7 @@ The
     </bsim:abstractCostDriver>
 ```
 ### Simulation Configuration Parser Plugin
-Parses the simulation config file which describes the cost variant by id, frequency of occurence, and cost:
+Parses the simulation config file which describes the cost variant by ID, frequency of occurrence, and cost:
 ```ruby
 bsim:costVariantConfig>
       <bsim:variant id="Shipment and delivery over distance A" frequency="0.2">
@@ -77,12 +77,12 @@ bsim:costVariantConfig>
       </bsim:variant>
 ```
 ### Logger Plugin
-Logs the extended simulation data in the form of an XES and XML file.  
+Logs the extended simulation data as an XES and XML file.  
 
 ## Results
-The results will be shown in two different file, *.xes and *_statistic.xml. 
+The results will be shown in two files, *.xes and *_statistic.xml. 
 ### Event log (enclosed with .xes)
-Event log is composed by a sequence of activity instance. We put the activity cost, process cost and reference Abstract Cost Driver, Concrete Cost Driver inside so that the utilisation of resource used is clear.
+The event log is composed of a sequence of activity instances. We put the activity cost, process cost reference Abstract Cost Driver, and Concrete Cost Driver inside so that the utilization of resources used is clear.
 ```ruby
 <trace>
 		<string key="concept:name" value="cost[Process_Instance_ID]"/>
@@ -105,25 +105,25 @@ The outputted file shows a complete detailed breakdown of sustainability info.
 Explanation of nodes moving downwards:
 ```ruby
 <Sustainability_Info>
-    <CostVariant_1>1.4019512857142856E-4</CostVariant_1>
+    <Average_Cost_Variant_Cost id=[id]>1.4019512857142856E-4</Average_Cost_Variant_Cost>
     ...
     <Average_Process_Instance_Cost>1.3816812000000002E-4</Average_Process_Instance_Cost>
-    <Activity_Average_Cost>
-        <Activity_1>
-            <CostVariant_1>0.0</CostVariant_1>
+    <Activity_Cost>
+        <Activity id=[id]>
+            <Activity_Average_Cost_Variant_Cost id=[id]>0.0</Activity_Average_Cost_Variant_Cost>
             ...
-            <average_activity_cost>0.0</average_activity_cost>
-        </Activity_1>
+            <Activity_Average_Cost>0.0</Activity_Average_Cost>
+        </Activity id=[id]>
         ...
-    </Activity_Average_Cost>
+    </Activity_Cost>
 
     <Activity_Instance_Cost>
-        <Activity_1>
-            <CostVariant_1>
+        <Activity id=[id]>
+            <Cost_Variant id=[id]>
                 <activity_instance_cost ProcessInstance_IDs="1, 2, 4, 6, 7, 8, 9" count="7">0.0</activity_instance_cost>
-            </CostVariant_1>
+            </Cost_Variant>
             ...
-        </Activity_1>
+        </Activity>
         ...
     </Activity_Instance_Cost>
 </Sustainability_Info>
