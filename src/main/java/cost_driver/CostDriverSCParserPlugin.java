@@ -18,9 +18,9 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
     @Override
     public Map<String, Object> parse(SimulationConfiguration simulationInput, Element sim)
             throws ScyllaValidationException {
-        /***
-         * Parse cost variants
-          */
+        /*
+        Parse cost variants
+        */
         Namespace bsimNamespace = sim.getNamespace();
         Element costVariantConfig = sim.getChildren("costVariantConfig", bsimNamespace).get(0);
         Integer count = Integer.valueOf(sim.getAttributeValue("processInstances"));

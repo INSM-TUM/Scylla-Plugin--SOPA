@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bsim:definitions xmlns:bsim="http://bsim.hpi.uni-potsdam.de/scylla/simModel" targetNamespace="http://www.hpi.de">
+  <bsim:simulationConfiguration id="hiring_process_sim" startDateTime="2017-10-01T09:00+01:00" processRef="Process_1" processInstances="10">
+
+    <bsim:costVariantConfig>
+      <bsim:variant id="standard procedure" frequency="0.5">
+        <bsim:driver id="Request for job advertisement" cost="0.0000391"/>
+        <bsim:driver id="In-house mail" cost="0.0000391"/>
+        <bsim:driver id="Advertisement" cost="0.0000291"/>
+        <bsim:driver id="Sifting" cost="0.0000585"/>
+        <bsim:driver id="Interview" cost="0.000035"/>
+        <bsim:driver id="Application for employee" cost="0.0000431"/>
+        <bsim:driver id="Contract documents" cost="0.0000254"/>
+      </bsim:variant>
+      <bsim:variant id="transport with e-bike" frequency="0.2">
+        <bsim:driver id="Request for job advertisement" cost="0.0000391"/>
+        <bsim:driver id="In-house mail" cost="0.00000422"/>
+        <bsim:driver id="Advertisement" cost="0.0000291"/>
+        <bsim:driver id="Sifting" cost="0.0000585"/>
+        <bsim:driver id="Interview" cost="0.000035"/>
+        <bsim:driver id="Application for employee" cost="0.0000431"/>
+        <bsim:driver id="Contract documents" cost="0.0000254"/>
+      </bsim:variant>
+      <bsim:variant id="digital only" frequency="0.3">
+        <bsim:driver id="Request for job advertisement" cost="0.0000195"/>
+        <bsim:driver id="In-house mail" cost="0.0000000195"/>
+        <bsim:driver id="Advertisement" cost="0.0000195"/>
+        <bsim:driver id="Sifting" cost="0.0000293"/>
+        <bsim:driver id="Interview" cost="0.000035"/>
+        <bsim:driver id="Application for employee" cost="0.0000195"/>
+        <bsim:driver id="Contract documents" cost="0.0000195"/>
+      </bsim:variant>
+    </bsim:costVariantConfig>
+
+    <bsim:startEvent id="StartEvent_1">
+      <bsim:arrivalRate timeUnit="HOURS">
+        <bsim:constantDistribution>
+          <bsim:constantValue>0.5</bsim:constantValue>
+        </bsim:constantDistribution>
+      </bsim:arrivalRate>
+    </bsim:startEvent>
+
+    <bsim:Task id="Activity_1g7b8vk" name="Submit request for job advertisement (Department)">
+      <bsim:duration timeUnit="MINUTES">
+        <bsim:exponentialDistribution>
+          <bsim:mean>15</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Department" amount="1" />
+      </bsim:resources>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Request for job advertisement"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_122hjew" name="Formally assess advertisement request (Faculty)">
+    <bsim:duration timeUnit="MINUTES">
+      <bsim:exponentialDistribution>
+        <bsim:mean>15</bsim:mean>
+      </bsim:exponentialDistribution>
+    </bsim:duration>
+    <bsim:resources>
+      <bsim:resource id="Faculty" amount="1" />
+    </bsim:resources>
+  </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_05u4o2t">
+      <bsim:outgoingSequenceFlow id="Flow_1nyxw0h">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_0u8ufi3">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_0ku0y0o">
+      <bsim:outgoingSequenceFlow id="Flow_0wxwzqc">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_0vp8xxh">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_1u10b51" name="Check contents of advertisement req. (Women&#39;s representative)">
+      <bsim:duration timeUnit="MINUTES">
+        <bsim:exponentialDistribution>
+          <bsim:mean>60</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Women's representative" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_124qpxn" name="Check contents of advertisement req. (Diversity officer)">
+      <bsim:duration timeUnit="MINUTES">
+        <bsim:constantDistribution>
+          <bsim:constantValue>48</bsim:constantValue>
+        </bsim:constantDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Diversity officer" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0g8l63a">
+      <bsim:outgoingSequenceFlow id="Flow_1nmxdf0">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_11kzhwe">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_0cfsdvd">
+      <bsim:outgoingSequenceFlow id="Flow_01motcc">
+        <bsim:branchingProbability>0.9</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1ui0p5r">
+        <bsim:branchingProbability>0.1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_1xtrc46" name="Formally assess advertisement req. (Human Resources)">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:constantDistribution>
+          <bsim:constantValue>2</bsim:constantValue>
+        </bsim:constantDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Human Resources" amount="1" />
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0riis5b">
+      <bsim:outgoingSequenceFlow id="Flow_1e6akcm">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1v1isik">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_0v9oc3o" name="Check contents of advertisement request (Staff council)">
+      <bsim:duration timeUnit="MINUTES">
+        <bsim:constantDistribution>
+          <bsim:constantValue>60</bsim:constantValue>
+        </bsim:constantDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Staff council" amount="1" />
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_10v9imm">
+      <bsim:outgoingSequenceFlow id="Flow_0if2abl">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1b4tmn0">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_1ox62p3" name="Submit job advertisement (Human Resources)">
+      <bsim:duration timeUnit="SECONDS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>60</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Human Resources" amount="1"/>
+      </bsim:resources>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Advertisement"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_0xyb1t2" name="Sift and select candidates (Department)">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>6</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Department" amount="1"/>
+      </bsim:resources>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Sifting"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_1pelblh" name="Conduct interview with candidate">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Interview"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_0bmzh3n" name="Conduct interview with candidate">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Interview"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_1rcb1z3" name="Conduct interview with candidate">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Interview"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_0jc8vy5" name="Conduct interview with candidate">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Interview"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_18fhffe" name="Conduct interview with candidate">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Interview"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0y147j5">
+      <bsim:outgoingSequenceFlow id="Flow_04elfv1">
+        <bsim:branchingProbability>0.6</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1ucrojx">
+        <bsim:branchingProbability>0.4</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_151owwm">
+      <bsim:outgoingSequenceFlow id="Flow_0upfx63">
+        <bsim:branchingProbability>0.6</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1n30743">
+        <bsim:branchingProbability>0.4</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_01b6f7i">
+      <bsim:outgoingSequenceFlow id="Flow_0mx5ply">
+        <bsim:branchingProbability>0.6</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1ui5gta">
+        <bsim:branchingProbability>0.4</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_1ssabr4">
+      <bsim:outgoingSequenceFlow id="Flow_1th96ap">
+        <bsim:branchingProbability>0.6</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_0kud4sv">
+        <bsim:branchingProbability>0.4</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_02rnq4l">
+      <bsim:outgoingSequenceFlow id="Flow_1r1nomg">
+        <bsim:branchingProbability>1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_15kb5t9">
+      <bsim:outgoingSequenceFlow id="Flow_0st77ac">
+        <bsim:branchingProbability>1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_03rzzxj">
+      <bsim:outgoingSequenceFlow id="Flow_1x4x1y2">
+        <bsim:branchingProbability>1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:exclusiveGateway id="Gateway_1by7hrc">
+      <bsim:outgoingSequenceFlow id="Flow_0wjetst">
+        <bsim:branchingProbability>1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_18mry2p" name="Request hiring of candidate (Department)">
+      <bsim:duration timeUnit="SECONDS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>30</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Department" amount="1"/>
+      </bsim:resources>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Application for employee"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+    <bsim:Task id="Activity_0011pmp" name="Formally assess hiring request (Faculty)">
+      <bsim:duration timeUnit="SECONDS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>30</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Faculty" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0q3jmik">
+      <bsim:outgoingSequenceFlow id="Flow_1ylseed">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1qr1ogq">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_1njiqcq" name="Check contents of hiring request (Women&#39;s representative)">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Women's representative" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0hm0sog">
+      <bsim:outgoingSequenceFlow id="Flow_159pvyr">
+        <bsim:branchingProbability>0.9</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_0atuzz4">
+        <bsim:branchingProbability>0.1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_09li4g6" name="Check contents of hiring request (Diversity officer)">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Diversity officer" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0y9oz18">
+      <bsim:outgoingSequenceFlow id="Flow_1xja2tn">
+        <bsim:branchingProbability>0.9</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_0m9r62k">
+        <bsim:branchingProbability>0.1</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_1r305l8" name="Formally assess hiring request (Human Resources)">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Human Resources" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_1uc1js4">
+      <bsim:outgoingSequenceFlow id="Flow_02e33lg">
+        <bsim:branchingProbability>0.5</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_0znqq8r">
+        <bsim:branchingProbability>0.5</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_0e1ovex" name="Check contents of hiring request (Staff council)">
+      <bsim:duration timeUnit="HOURS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>1</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Staff council" amount="1"/>
+      </bsim:resources>
+    </bsim:Task>
+
+    <bsim:exclusiveGateway id="Gateway_0lbskbx">
+      <bsim:outgoingSequenceFlow id="Flow_0947lxx">
+        <bsim:branchingProbability>0.8</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+      <bsim:outgoingSequenceFlow id="Flow_1xi0k6v">
+        <bsim:branchingProbability>0.2</bsim:branchingProbability>
+      </bsim:outgoingSequenceFlow>
+    </bsim:exclusiveGateway>
+
+    <bsim:Task id="Activity_0qu5bly" name="Finalize contract (Human Resources)">
+      <bsim:duration timeUnit="DAYS">
+        <bsim:exponentialDistribution>
+          <bsim:mean>4</bsim:mean>
+        </bsim:exponentialDistribution>
+      </bsim:duration>
+      <bsim:resources>
+        <bsim:resource id="Human Resources" amount="1"/>
+      </bsim:resources>
+      <bsim:costDrivers>
+        <bsim:costDriver id="Contract documents"/>
+      </bsim:costDrivers>
+    </bsim:Task>
+
+
+  </bsim:simulationConfiguration>
+</bsim:definitions>

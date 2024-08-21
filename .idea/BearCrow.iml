@@ -12,6 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <content url="file://$USER_HOME$/src/main/java">
@@ -28,7 +29,7 @@
     <orderEntry type="module-library">
       <library name="Maven: de.hpi.bpt:scylla:0.0.1-SNAPSHOT">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../BearCrow/scylla/scylla.jar!/" />
+          <root url="jar://$MODULE_DIR$/scylla/scylla.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -51,5 +52,6 @@
     <orderEntry type="library" name="Maven: org.deckfour:openxes:20160212" level="project" />
     <orderEntry type="library" name="Maven: org.deckfour:openxes-xstream:20160212" level="project" />
     <orderEntry type="library" name="Maven: org.deckfour:ospex:1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-params:5.9.2" level="project" />
   </component>
 </module>
