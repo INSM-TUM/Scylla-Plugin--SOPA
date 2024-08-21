@@ -85,7 +85,7 @@ jobs:
         run: |
           cd ./target/
           mv ./*.jar ./cost_driver.jar
-          zip -r ../cost_driver.zip ./*.jar ./libs/*
+          zip -r ../cost_driver.zip ./*.jar
           cd ..
           echo "RELEASE_VERSION=$(cat pom.xml | grep '<version>' | head -1 | sed 's/<version>//' | sed 's/<\/version>//')" >> $GITHUB_ENV
 
