@@ -13,7 +13,6 @@ public class CostVariant {
         this.frequency = frequency;
         this.id = id;
     }
-
     public String getId() {
         return id;
     }
