@@ -18,10 +18,48 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
     @Override
     public Map<String, Object> parse(SimulationConfiguration simulationInput, Element sim)
             throws ScyllaValidationException {
-
-        Map<Integer, String> costDrivers = new HashMap<>();
-
+        /***
+         * Parse cost variants
+          */
         Namespace bsimNamespace = sim.getNamespace();
+        Element costVariantConfig = sim.getChildren("costVariantConfig", bsimNamespace).get(0);
+        Integer count = Integer.valueOf(costVariantConfig.getAttributeValue("count"));
+
+        Map<String, Object> extensionAttributes = new HashMap<>();
+        List<CostVariant> costVariants = new ArrayList<>();
+
+        Double frequencyCount = 0.0;
+
+        for (Element ele: costVariantConfig.getChildren()) {
+            String id = ele.getAttributeValue("id");
+            Double frequency = Double.valueOf(ele.getAttributeValue("frequency"));
+            frequencyCount += frequency;
+
+            Map<String, Double> concretisedACD = new HashMap<>();
+
+            for (Element element: ele.getChildren()) {
+                String CID = element.getAttributeValue("id");
+                Double cost = Double.valueOf(element.getAttributeValue("cost"));
+
+                concretisedACD.put(CID, cost);
+            }
+
+            CostVariant costVariant = new CostVariant(id, frequency, concretisedACD);
+            costVariants.add(costVariant);
+        }
+
+        if (frequencyCount != 1) {
+            throw new ScyllaValidationException("The sum of all cost variants' frequency is not equal to 1");
+        }
+
+        CostVariantConfig costVariantConfiguration = new CostVariantConfig(count, costVariants);
+        extensionAttributes.put("CostVariant", costVariantConfiguration);
+
+
+        /***
+         * Parse Concretised abstract cost drivers in tasks
+         */
+        Map<Integer, String> costDrivers = new HashMap<>();
         List<Element> elements = sim.getChildren().stream().filter(c -> c.getChild("costDrivers", bsimNamespace) != null).toList();
 
         for (Element el : elements) {
@@ -44,7 +82,6 @@ public class CostDriverSCParserPlugin extends SimulationConfigurationParserPlugg
 
         }
 
-        HashMap<String, Object> extensionAttributes = new HashMap<>();
         extensionAttributes.put("costDrivers", costDrivers);
 
         return extensionAttributes;

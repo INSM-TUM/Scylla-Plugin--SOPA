@@ -14,27 +14,27 @@
     <bsim:dynamicResource id="courier" defaultQuantity="4" defaultCost="10.0" defaultTimetableId="Standard" defaultTimeUnit="HOURS" />
   </bsim:resourceData>
   <bsim:costDriver>
-    <bsim:abstractCostDriver id="Delivery" >
+    <bsim:abstractCostDriver id="Delivery" defaultTimeUnit="HOURS">
       <bsim:concreteCostDeiver id="Delivery_B_Small_Lorry" cost="0.00005524"/>
       <bsim:concreteCostDeiver id="Delivery_A_Small_Lorry" cost="0.00003683"/>
       <bsim:concreteCostDeiver id="Delivery_A_Lorry" cost="0.00002843"/>
       <bsim:concreteCostDeiver id="Delivery_B_Lorry" cost="0.00004265"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Filling Material">
+    <bsim:abstractCostDriver id="Filling Material" defaultTimeUnit="HOURS">
       <bsim:concreteCostDeiver id="Filling_A" cost="0.00001468"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Packaging Material">
+    <bsim:abstractCostDriver id="Packaging Material" defaultTimeUnit="HOURS">
       <bsim:concreteCostDeiver id="Packaging_Material_A" cost="0.00007611"/>
       <bsim:concreteCostDeiver id="Packaging_Material_B" cost="0.00003806"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Re-Routing">
+    <bsim:abstractCostDriver id="Re-Routing" defaultTimeUnit="HOURS">
       <bsim:concreteCostDeiver id="Re-Routing_A_Lorry" cost="0.000008529"/>
       <bsim:concreteCostDeiver id="Re-Routing_A_Small_Lorry" cost="0.00001105"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Receipt">
+    <bsim:abstractCostDriver id="Receipt" defaultTimeUnit="MINUTES">
       <bsim:concreteCostDeiver id="Receipt" cost="0.00001153"/>
     </bsim:abstractCostDriver>
-    <bsim:abstractCostDriver id="Shipment">
+    <bsim:abstractCostDriver id="Shipment" defaultTimeUnit="HOURS">
       <bsim:concreteCostDeiver id="Shipment_A_Lorry" cost="0.00007839"/>
       <bsim:concreteCostDeiver id="Shipment_A_Rail_Electric" cost="0.0000000253"/>
       <bsim:concreteCostDeiver id="Shipment_B_Lorry" cost="0.0001568"/>

@@ -17,7 +17,8 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class CostDriverExecutionPlugin {
+
+public class CostDriverExecutionPlugin { /*
     List<AbstractCostDriver> abstractCostDrivers;
     List<ConcreteCostDriver> concreteCostDrivers;
 
@@ -68,6 +69,7 @@ public class CostDriverExecutionPlugin {
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, ScyllaValidationException {
         execute();
     }
+    */
 }
 
 //Helper class
@@ -170,9 +172,7 @@ class XMLParser {
                                 //New approach
                                 ConcreteCostDriver tmp = new ConcreteCostDriver(concreteCostDriverID,
                                         abstractCostDriverTMP,
-                                        probability,
-                                        LCAScores,
-                                        new TimeDistributionWrapper(TimeUnit.HOURS)
+                                        LCAScores
                                 );
                                 abstractCostDriverTMP.addChild(tmp);
 

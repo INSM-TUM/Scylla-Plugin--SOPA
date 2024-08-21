@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bsim:definitions xmlns:bsim="http://bsim.hpi.uni-potsdam.de/scylla/simModel" targetNamespace="http://www.hpi.de">
   <bsim:simulationConfiguration id="hiring_process_sim" startDateTime="2017-10-01T09:00+01:00" processRef="Process_1" processInstances="10">
+
+    <bsim:costVariantConfig count="100">
+      <bsim:variant id="standard procedure" frequency="0.5">
+        <bsim:driver id="Request for job advertisement" cost="0.0000391"/>
+        <bsim:driver id="In-house mail" cost="0.0000391"/>
+        <bsim:driver id="Advertisement" cost="0.0000291"/>
+        <bsim:driver id="Sifting" cost="0.0000585"/>
+        <bsim:driver id="Interview" cost="0.000035"/>
+        <bsim:driver id="Application for employee" cost="0.0000431"/>
+        <bsim:driver id="Contract documents" cost="0.0000254"/>
+      </bsim:variant>
+      <bsim:variant id="transport with e-bike" frequency="0.2">
+        <bsim:driver id="Request for job advertisement" cost="0.0000391"/>
+        <bsim:driver id="In-house mail" cost="0.00000422"/>
+        <bsim:driver id="Advertisement" cost="0.0000291"/>
+        <bsim:driver id="Sifting" cost="0.0000585"/>
+        <bsim:driver id="Interview" cost="0.000035"/>
+        <bsim:driver id="Application for employee" cost="0.0000431"/>
+        <bsim:driver id="Contract documents" cost="0.0000254"/>
+      </bsim:variant>
+      <bsim:variant id="digital only" frequency="0.3">
+        <bsim:driver id="Request for job advertisement" cost="0.0000195"/>
+        <bsim:driver id="In-house mail" cost="0.0000000195"/>
+        <bsim:driver id="Advertisement" cost="0.0000195"/>
+        <bsim:driver id="Sifting" cost="0.0000293"/>
+        <bsim:driver id="Interview" cost="0.000035"/>
+        <bsim:driver id="Application for employee" cost="0.0000195"/>
+        <bsim:driver id="Contract documents" cost="0.0000195"/>
+      </bsim:variant>
+    </bsim:costVariantConfig>
+
     <bsim:startEvent id="StartEvent_1">
       <bsim:arrivalRate timeUnit="HOURS">
         <bsim:constantDistribution>

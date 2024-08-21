@@ -35,14 +35,9 @@ public class CostDriverGCParserPlugin extends GlobalConfigurationParserPluggable
 
             for (Element child: el.getChildren()) { //parse concrete cost drivers
                 String chileId = child.getAttributeValue("id");
-                Double LCAScore = Double.valueOf(child.getAttributeValue("LCAScores"));
-                Double prob = Double.valueOf(child.getChild("probability", bsimNamespace).getText());
-                Element durationElem = child.getChild("duration", bsimNamespace);
-                TimeDistributionWrapper duration = null;
-                if (durationElem != null) {
-                    duration = getTimeDistributionWrapper(durationElem,bsimNamespace);
-                }
-                ConcreteCostDriver costDriver = new ConcreteCostDriver(chileId, abstractCostDriver, prob, LCAScore,duration);
+                Double LCAScore = Double.valueOf(child.getAttributeValue("cost"));
+
+                ConcreteCostDriver costDriver = new ConcreteCostDriver(chileId, abstractCostDriver, LCAScore);
                 abstractCostDriver.addChild(costDriver);
             }
             abstractCostDrivers.add(abstractCostDriver);
