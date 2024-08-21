@@ -62,7 +62,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             XFactory factory = XFactoryRegistry.instance().currentDefault();
             XLog log = factory.createLog();
 
-            List<XExtension> extensions = new ArrayList<XExtension>();
+            List<XExtension> extensions = new ArrayList<>();
             XLifecycleExtension lifecycleExt = XLifecycleExtension.instance();
             extensions.add(lifecycleExt);
             XOrganizationalExtension organizationalExt = XOrganizationalExtension.instance();
@@ -73,16 +73,16 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             extensions.add(conceptExt);
             log.getExtensions().addAll(extensions);
 
-            List<XAttribute> globalTraceAttributes = new ArrayList<XAttribute>();
+            List<XAttribute> globalTraceAttributes = new ArrayList<>();
             globalTraceAttributes.add(XConceptExtension.ATTR_NAME);
             log.getGlobalTraceAttributes().addAll(globalTraceAttributes);
 
-            List<XAttribute> globalEventAttributes = new ArrayList<XAttribute>();
+            List<XAttribute> globalEventAttributes = new ArrayList<>();
             globalEventAttributes.add(XConceptExtension.ATTR_NAME);
             globalEventAttributes.add(XLifecycleExtension.ATTR_TRANSITION);
             log.getGlobalEventAttributes().addAll(globalEventAttributes);
 
-            List<XEventClassifier> classifiers = new ArrayList<XEventClassifier>();
+            List<XEventClassifier> classifiers = new ArrayList<>();
             classifiers.add(new XEventAttributeClassifier("MXML Legacy Classifier", XConceptExtension.KEY_NAME,
                     XLifecycleExtension.KEY_TRANSITION));
             classifiers.add(new XEventAttributeClassifier("Event Name", XConceptExtension.KEY_NAME));
@@ -110,7 +110,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
              * Preparation for Average Cost Calculation
              * Scenario -> List of total costs
              */
-            Map<String, List<AtomicReference<Double>>> InstancesCostVariant2TotalCostMap = new HashMap<>();
+            Map<String, List<AtomicReference<Double>>> instancesCostVariant2TotalCostMap = new HashMap<>();
 
 
             /**
@@ -249,12 +249,12 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                         .createAttributeLiteral("total:cost", String.valueOf(totalCostPerInstance), conceptExt));
 
                 /**
-                 * add total cost of each instances to InstancesCostVariant2TotalCostMap
+                 * add total cost of each instances to instancesCostVariant2TotalCostMap
                  * */
-                if (!InstancesCostVariant2TotalCostMap.containsKey(costVariant.getId())) {
-                    InstancesCostVariant2TotalCostMap.put(costVariant.getId(), new ArrayList<>());
+                if (!instancesCostVariant2TotalCostMap.containsKey(costVariant.getId())) {
+                    instancesCostVariant2TotalCostMap.put(costVariant.getId(), new ArrayList<>());
                 }
-                InstancesCostVariant2TotalCostMap.get(costVariant.getId()).add(totalCostPerInstance);
+                instancesCostVariant2TotalCostMap.get(costVariant.getId()).add(totalCostPerInstance);
 
                 log.add(trace);
             }
@@ -267,8 +267,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
              * */
             Map<String, Double> averageTotalCostMap = new HashMap<>();
             List<Double> instanceCosts = new ArrayList<>();
-            for (String costVariant:InstancesCostVariant2TotalCostMap.keySet()) {
-                averageTotalCostMap.put(costVariant, InstancesCostVariant2TotalCostMap.get(costVariant).stream().mapToDouble(i -> i.get()).average().orElse(0.0));
+            for (String costVariant:instancesCostVariant2TotalCostMap.keySet()) {
+                averageTotalCostMap.put(costVariant, instancesCostVariant2TotalCostMap.get(costVariant).stream().mapToDouble(i -> i.get()).average().orElse(0.0));
                 //log.getAttributes().put(costVariant, factory.createAttributeLiteral(costVariant, String.valueOf(averageTotalCostMap.get(costVariant)), null));
 
                 Element cv = doc.createElement(costVariant.replace(' ', '_'));
@@ -276,7 +276,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 rootElement.appendChild(cv);
 
                 //Collect all traces average cost
-                for (AtomicReference<Double> d: InstancesCostVariant2TotalCostMap.get(costVariant)) instanceCosts.add(d.get());
+                for (AtomicReference<Double> d: instancesCostVariant2TotalCostMap.get(costVariant)) instanceCosts.add(d.get());
             }
 
             //Calculate all traces average cost and put them into xml

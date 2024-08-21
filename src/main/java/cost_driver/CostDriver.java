@@ -4,7 +4,7 @@ public abstract class CostDriver {
     protected String id;
 
 
-    public CostDriver(String id){
+    protected CostDriver(String id){
         this.id = id;
     }
 

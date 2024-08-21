@@ -4,12 +4,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import de.hpi.bpt.scylla.exception.ScyllaValidationException;
-import de.hpi.bpt.scylla.model.configuration.distribution.*;
 import de.hpi.bpt.scylla.model.global.GlobalConfiguration;
 import de.hpi.bpt.scylla.plugin_type.parser.GlobalConfigurationParserPluggable;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
-import static de.hpi.bpt.scylla.parser.SimulationConfigurationParser.getTimeDistributionWrapper;
 
 //This is an example Global Configuration Parser of "hiring_process_global"
 

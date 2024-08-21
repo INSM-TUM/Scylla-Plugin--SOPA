@@ -33,7 +33,7 @@ public class AbstractCostDriver extends CostDriver {
         this.defualtTimeUnit = defualtTimeUnit;
     }
 
-    public ConcreteCostDriver findCCDbyID(String CCDId) {
-        return getChildren().stream().filter(i -> i.getId().equals(CCDId)).findFirst().get();
+    public ConcreteCostDriver findCCDbyID(String CCDid) {
+        return getChildren().stream().filter(i -> i.getId().equals(CCDid)).findFirst().orElseThrow();
     }
 }

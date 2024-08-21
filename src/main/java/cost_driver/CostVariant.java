@@ -1,7 +1,5 @@
 package cost_driver;
 
-import org.deckfour.xes.model.XAttribute;
-
 import java.util.*;
 
 public class CostVariant {
