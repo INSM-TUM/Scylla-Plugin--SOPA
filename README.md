@@ -105,21 +105,21 @@ The outputted file shows a complete detailed breakdown of sustainability info.
 Explanation of nodes moving downwards:
 ```ruby
 <Sustainability_Info>
-    <Average_Cost_Variant_Cost id=[id]>1.4019512857142856E-4</Average_Cost_Variant_Cost>
+    <Average_Cost_Variant_Cost id="[id]">1.4019512857142856E-4</Average_Cost_Variant_Cost>
     ...
     <Average_Process_Instance_Cost>1.3816812000000002E-4</Average_Process_Instance_Cost>
     <Activity_Cost>
-        <Activity id=[id]>
-            <Activity_Average_Cost_Variant_Cost id=[id]>0.0</Activity_Average_Cost_Variant_Cost>
+        <Activity id="[id]">
+            <Activity_Average_Cost_Variant_Cost id="[id]">0.0</Activity_Average_Cost_Variant_Cost>
             ...
             <Activity_Average_Cost>0.0</Activity_Average_Cost>
-        </Activity id=[id]>
+        </Activity>
         ...
     </Activity_Cost>
 
     <Activity_Instance_Cost>
-        <Activity id=[id]>
-            <Cost_Variant id=[id]>
+        <Activity id="[id]">
+            <Cost_Variant id="[id]">
                 <activity_instance_cost ProcessInstance_IDs="1, 2, 4, 6, 7, 8, 9" count="7">0.0</activity_instance_cost>
             </Cost_Variant>
             ...
@@ -127,6 +127,7 @@ Explanation of nodes moving downwards:
         ...
     </Activity_Instance_Cost>
 </Sustainability_Info>
+
 
 ```
 
