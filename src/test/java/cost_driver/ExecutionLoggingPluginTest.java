@@ -33,7 +33,7 @@ class ExecutionLoggingPluginTest extends SimulationTest {
     @Test
     void testWriteToLog() throws IOException {
         PluginLoader.getDefaultPluginLoader().activateNone().loadPackage(Main.class.getPackageName());
-        setGlobalSeed(-6156113099158504075L);
+        setGlobalSeed(-7870005462812540457L);
         runSimpleSimulation(
                 GLOBAL_CONFIGURATION_FILE,
                 SIMULATION_MODEL_FILE,
