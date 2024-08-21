@@ -26,9 +26,10 @@ More information can be found in our [report]().
 4. Select the desired configuration files in samples UI and check "cost_driver" as plugin.
 <img width="1822" alt="Screenshot 2024-01-17 at 23 10 06" src="https://github.com/mhunter02/BearCrow-private/assets/85895529/83200e2f-5fce-4098-8c8e-0b2224d9d91e">
 5. The logged data files will be found in a folder with format: "output_yy_mm_dd...."
+
 #### NOTE
 *1. Please remember to put the latest scylla.jar & scylla-tests.jar files in the ./lib folder</br>
-*2. Another way of managing the plugin is by replacing the current Scylla dependencies, with the following. Please ensure you are using the [latest](https://github.com/orgs/bptlab/packages?repo_name=scylla) Scylla package**
+*2. Another way of managing the plugin is by replacing the current Scylla dependencies, with the following. Please ensure you are using the [latest](https://github.com/orgs/bptlab/packages?repo_name=scylla) Scylla package
 ```
       <dependency>
             <groupId>de.hpi.bpt</groupId>
