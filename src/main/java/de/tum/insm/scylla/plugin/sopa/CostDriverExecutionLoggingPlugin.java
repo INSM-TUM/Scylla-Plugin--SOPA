@@ -103,7 +103,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
             //Preparation for adding <string key=”cost:variant” value=”standard procedure”/>
             SimulationConfiguration simulationConfiguration = desmojObjectsMap.get(processId).getSimulationConfiguration();
             CostVariantConfiguration costVariants = (CostVariantConfiguration) simulationConfiguration.getExtensionAttributes().get("cost_driver_CostVariant");
-            Stack<CostVariant> costVariantStack = costVariants.getCostVariantListConfigured();
+            Stack<CostVariant> allAvailableCostVariants = costVariants.getCostVariantListConfigured();
 
             /**
              * Preparation for Average Cost Calculation
@@ -141,9 +141,6 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 throw new RuntimeException(e);
             }
             // root elements
-            Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("Sustainability_Info");
-            doc.appendChild(rootElement);
 
             for (Integer processInstanceId : nodeInfos.keySet()) {
                 XTrace trace = factory.createTrace();
@@ -152,7 +149,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 /**
                  * add <string key=”cost:variant” value=”standard procedure”/>
                  * */
-                CostVariant costVariant = costVariantStack.pop();
+                CostVariant costVariant = allAvailableCostVariants.pop();
                 trace.getAttributes().put("cost:variant", factory
                         .createAttributeLiteral("cost:variant", costVariant.getId(), conceptExt));
 
@@ -285,53 +282,56 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 log.add(trace);
             }
 
+            /**
+             * Prepare sustainability statistics document
+             * */
+
+            Document sustainabilityStatisticsDocument = docBuilder.newDocument();
+            Element sustainabilityInfo = sustainabilityStatisticsDocument.createElement("Sustainability_Info");
+            sustainabilityStatisticsDocument.appendChild(sustainabilityInfo);
             XesXmlSerializer serializer;
             FileOutputStream fos;
 
-            /**
-             * calculate average value of instances' total cost
-             * */
             Map<String, Double> averageTotalCostMap = new HashMap<>();
             List<Double> instanceCosts = new ArrayList<>();
             for (String costVariant:instancesCostVariant2TotalCostMap.keySet()) {
                 averageTotalCostMap.put(costVariant, instancesCostVariant2TotalCostMap.get(costVariant).stream().mapToDouble(i -> i.get()).average().orElse(0.0));
 
-                Element cv = doc.createElement("Average_Cost_Variant_Cost");
-                cv.setAttribute("id", costVariant.replace(' ', '_'));
-                cv.setTextContent(String.valueOf(averageTotalCostMap.get(costVariant)));
-                rootElement.appendChild(cv);
+                Element averageCostVariant = sustainabilityStatisticsDocument.createElement("Average_Cost_Variant_Cost");
+                averageCostVariant.setAttribute("id", costVariant.replace(' ', '_'));
+                averageCostVariant.setTextContent(String.valueOf(averageTotalCostMap.get(costVariant)));
+                sustainabilityInfo.appendChild(averageCostVariant);
 
                 //Collect all traces average cost
                 for (AtomicReference<Double> d: instancesCostVariant2TotalCostMap.get(costVariant)) instanceCosts.add(d.get());
             }
 
             //Calculate all traces average cost and put them into xml
-            Element tcv = doc.createElement("Average_Process_Instance_Cost");
-            tcv.setTextContent(String.valueOf(instanceCosts.stream().mapToDouble(i -> i).average().orElse(0.0)));
-            rootElement.appendChild(tcv);
+            Element averageProcessInstanceCost = sustainabilityStatisticsDocument.createElement("Average_Process_Instance_Cost");
+            averageProcessInstanceCost.setTextContent(String.valueOf(instanceCosts.stream().mapToDouble(i -> i).average().orElse(0.0)));
+            sustainabilityInfo.appendChild(averageProcessInstanceCost);
 
             //Calculate all traces average cost per activities and put them into xml
-            Element acitivityAverageCost = doc.createElement("Activity_Cost");
-
+            Element acitivityAverageCost = sustainabilityStatisticsDocument.createElement("Activity_Cost");
 
             //Create other element for not aggregated data
-            Element individualCostPerInstance = doc.createElement("Activity_Instance_Cost");
+            Element individualCostPerInstance = sustainabilityStatisticsDocument.createElement("Activity_Instance_Cost");
 
             for (String act:averageCostEachActivityMap.keySet()) {
-                Element activity = doc.createElement("Activity");
+                Element activity = sustainabilityStatisticsDocument.createElement("Activity");
                 activity.setAttribute("id", act.replace(' ', '_'));
 
                 //Create activity cost list
-                Element activityCost = doc.createElement( "Activity_Average_Cost");
+                Element activityCost = sustainabilityStatisticsDocument.createElement( "Activity_Average_Cost");
                 activityCost.setAttribute("id", act.replace(' ', '_'));
                 List<Double> costInDifferentCostVariantEachActivity = new ArrayList<>();
 
                 //Create individual activity cost
-                Element individualActivityCost = doc.createElement("Activity");
+                Element individualActivityCost = sustainabilityStatisticsDocument.createElement("Activity");
                 individualActivityCost.setAttribute("id", act.replace(' ', '_'));
 
                 for (String scen: averageCostEachActivityMap.get(act).keySet()) {
-                    Element scenario = doc.createElement("Activity_Average_Cost_Variant_Cost");
+                    Element scenario = sustainabilityStatisticsDocument.createElement("Activity_Average_Cost_Variant_Cost");
                     scenario.setAttribute("id", scen.replace(' ', '_'));
                     scenario.setTextContent(String.valueOf(averageCostEachActivityMap.get(act).get(scen).stream().mapToDouble(i -> i).average().orElse(0.0)));
                     activity.appendChild(scenario);
@@ -340,14 +340,14 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                     costInDifferentCostVariantEachActivity.addAll(averageCostEachActivityMap.get(act).get(scen));
 
                     //Add individual cost to different activity
-                    Element individualCostWithDifferentCostVariant = doc.createElement("Cost_Variant");
+                    Element individualCostWithDifferentCostVariant = sustainabilityStatisticsDocument.createElement("Cost_Variant");
                     individualCostWithDifferentCostVariant.setAttribute("id", scen.replace(' ', '_'));
 
                     if (activity2ACD.get(act) != null) individualActivityCost.setAttribute("ACD", activity2ACD.get(act).toString().replace("[","").replace("]", ""));
                     if (activityCostVariantACDMap.get(act).get(scen) != null && !activityCostVariantACDMap.get(act).get(scen).isEmpty())  individualCostWithDifferentCostVariant.setAttribute("CCD", activityCostVariantACDMap.get(act).get(scen).toString().replace("[", "").replace("]", ""));
                     individualActivityCost.appendChild(individualCostWithDifferentCostVariant);
 
-                    Element individualInstanceCost = doc.createElement("activity_instance_cost");
+                    Element individualInstanceCost = sustainabilityStatisticsDocument.createElement("activity_instance_cost");
                     individualInstanceCost.setTextContent(String.valueOf(averageCostEachActivityMap.get(act).get(scen).get(0)));
                     individualInstanceCost.setAttribute("count", String.valueOf(averageCostEachActivityMap.get(act).get(scen).stream().count()));
                     individualInstanceCost.setAttribute("ProcessInstance_IDs", activityCostVariantProcessIDMap.get(act).get(scen).stream().distinct().toList().toString().replace("[","").replace("]", ""));
@@ -369,8 +369,8 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
                 acitivityAverageCost.appendChild(activity);
                 individualCostPerInstance.appendChild(individualActivityCost);
             }
-            rootElement.appendChild(acitivityAverageCost);
-            rootElement.appendChild(individualCostPerInstance);
+            sustainabilityInfo.appendChild(acitivityAverageCost);
+            sustainabilityInfo.appendChild(individualCostPerInstance);
 
 
             if (gzipOn) {
@@ -390,7 +390,7 @@ public class CostDriverExecutionLoggingPlugin extends OutputLoggerPluggable {
              */
             try (FileOutputStream output =
                          new FileOutputStream(outputPathWithoutExtension + "sustainability_global_information_statistic.xml")) {
-                writeXml(doc, output);
+                writeXml(sustainabilityStatisticsDocument, output);
             } catch (IOException | TransformerException e) {
                 e.printStackTrace();
             }
