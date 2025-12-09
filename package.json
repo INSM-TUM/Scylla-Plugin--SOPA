@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KoettingNina/Scylla-Plugin--SOPA.git"
+    "url": "git+https://github.com/INSM-TUM/Scylla-Plugin--SOPA.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KoettingNina/Scylla-Plugin--SOPA/issues"
+    "url": "https://github.com/INSM-TUM/Scylla-Plugin--SOPA/issues"
   },
-  "homepage": "https://github.com/KoettingNina/Scylla-Plugin--SOPA#readme",
+  "homepage": "https://github.com/INSM-TUM/Scylla-Plugin--SOPA#readme",
   "dependencies": {
     "electron": "^36.1.0"
   }

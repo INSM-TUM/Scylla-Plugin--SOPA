@@ -86,9 +86,6 @@ The plugin now supports various statistical distributions for cost driver amount
 Parses the global config file which describes the abstract CDs and their children, concreteCDs with details that it consists of. **New**: Now supports OpenLCA integration configuration:
 ```xml
 <bsim:costDriver>
-    
-    
-    
     <bsim:abstractCostDriver id="[Abstract Cost Driver ID]">
       <bsim:concreteCostDriver id="[Concrete Cost Driver ID]" cost="[LCA Score]"/>
       <bsim:concreteCostDriver id="[Concrete Cost Driver ID]" cost="[LCA Score]"/>
@@ -107,6 +104,7 @@ Parses the simulation config file which describes the cost variant by ID, freque
       <bsim:variant id="[Cost Variant ID]" frequency="[double]">
         <bsim:driver abstractId="[Abstract Cost Driver ID]" concreteId="[Concrete Cost Driver ID]">
           <bsim:distribution>
+            
             <bsim:constantDistribution>
               <bsim:constantValue>[value]</bsim:constantValue>
             </bsim:constantDistribution>
